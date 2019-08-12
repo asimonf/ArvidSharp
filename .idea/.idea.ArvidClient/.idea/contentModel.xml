@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Cary\.nuget\packages\zstandard.net\1.1.7\build\x64\libzstd.dll" t="Include" />
+    <e p="C:\Users\Cary\.nuget\packages\zstandard.net\1.1.7\build\x86\libzstd.dll" t="Include" />
+    <e p="C:\Users\Cary\.Rider2019.1\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Cary\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_ArvidClient.-2079748728.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Cary\RiderProjects\ArvidClient" t="IncludeFlat">
+      <e p="Arvid" t="IncludeRecursive">
+        <e p="Arvid.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Client" t="Include">
+          <e p="Blitter.cs" t="Include" />
+          <e p="Client.cs" t="Include" />
+        </e>
+        <e p="CommandType.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="Arvid.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Response" t="Include">
+          <e p="EnumVideoResponse.cs" t="Include" />
+          <e p="RegularResponse.cs" t="Include" />
+        </e>
+        <e p="VideoMode.cs" t="Include" />
+        <e p="VideoModeInfo.cs" t="Include" />
+        <e p="x64" t="Include" />
+        <e p="x86" t="Include" />
+      </e>
+      <e p="ArvidClient.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
