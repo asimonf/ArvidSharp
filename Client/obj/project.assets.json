@@ -11,6 +11,16 @@
         "runtime": {
           "bin/placeholder/Arvid.dll": {}
         }
+      },
+      "Zstandard/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.0",
+        "compile": {
+          "bin/placeholder/Zstandard.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Zstandard.dll": {}
+        }
       }
     }
   },
@@ -19,11 +29,17 @@
       "type": "project",
       "path": "../Arvid/Arvid.csproj",
       "msbuildProject": "../Arvid/Arvid.csproj"
+    },
+    "Zstandard/1.0.0": {
+      "type": "project",
+      "path": "../Zstandard/Zstandard.csproj",
+      "msbuildProject": "../Zstandard/Zstandard.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.0": [
-      "Arvid >= 1.0.0"
+      "Arvid >= 1.0.0",
+      "Zstandard >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -52,6 +68,9 @@
           "projectReferences": {
             "C:\\Users\\Cary\\RiderProjects\\Arvid\\Arvid\\Arvid.csproj": {
               "projectPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Arvid\\Arvid.csproj"
+            },
+            "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj": {
+              "projectPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj"
             }
           }
         }

@@ -17,6 +17,9 @@
         "projectReferences": {
           "C:\\Users\\Cary\\RiderProjects\\Arvid\\Arvid\\Arvid.csproj": {
             "projectPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Arvid\\Arvid.csproj"
+          },
+          "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj": {
+            "projectPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj"
           }
         }
       }

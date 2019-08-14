@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using Arvid.Client.Blit;
 using Arvid.Response;
 
 namespace Arvid.Client
@@ -18,9 +19,10 @@ namespace Arvid.Client
         private readonly ArrayPool<ushort> _arrayPool;
 
         private ushort _nextId = 0;
+
+        private Blitter _blitter;
         
         public bool Connected { get; private set; }
-        public bool StillBlitting { get; private set; }
 
         public Client(string ipAddress)
         {
@@ -31,12 +33,13 @@ namespace Arvid.Client
             
             _control = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             _data = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
-
+            
             _arrayPool = ArrayPool<ushort>.Create();
         }
 
         public void Dispose()
         {
+            _blitter?.Dispose();
             _control.Dispose();
             _data.Dispose();
         }
@@ -94,6 +97,9 @@ namespace Arvid.Client
             {
                 _control.Connect(_controlEndPoint);
                 _data.Connect(_dataEndPoint);
+                _blitter = new Blitter();
+                _blitter.Start();
+                _blitter.SegmentReady += BlitterOnSegmentReady;
             }
             catch
             {
@@ -118,16 +124,46 @@ namespace Arvid.Client
             _control.Disconnect(true);
             _data.Disconnect(true);
             Connected = false;
+            
+            _blitter.Stop();
+            _blitter.Dispose();
+            _blitter = null;
 
             return result;
         }
+        
+        private unsafe void BlitterOnSegmentReady(SegmentWorkOutput output)
+        {
+            // the extra is for an id
+            var payloadSize = (sizeof(CommandType) >> 1) + 3 + output.CompressedSize;
+            var payload = _arrayPool.Rent(payloadSize);
 
-        public int BlitBuffer(ReadOnlySpan<ushort> buffer, int width, int height, int stride)
+            payload[0] = (ushort) CommandType.Blit;
+            payload[1] = output.CompressedSize;
+            payload[2] = output.YPos;
+            payload[3] = output.Stride;
+            
+            Array.Copy(
+                output.Output, 
+                0, 
+                payload, 
+                4, 
+                output.CompressedSize
+            );
+
+            fixed (void* payloadPtr = payload)
+            {
+                var payloadSpan = new ReadOnlySpan<byte>(payloadPtr, payloadSize << 1);
+                _data.Send(payloadSpan);
+            }
+        }
+
+        public int BlitBuffer(ushort[] buffer, int width, int height)
         {
             if (!Connected) return -1;
 
-            var byteSize = stride * height;
-
+            _blitter.Blit(buffer, height, width);
+            
             return 0;
         }
 
@@ -144,7 +180,7 @@ namespace Arvid.Client
         {
             if (!Connected) return 0;
 
-            // TODO: Wait for render to finish
+            _blitter.Wait();
             
             _createAndSendControlPayload(CommandType.Vsync);
 
