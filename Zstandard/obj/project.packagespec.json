@@ -1,15 +1,20 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
+    "projectUniqueName": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
     "projectName": "Zstandard",
-    "projectPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
-    "outputPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\obj\\",
+    "projectPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
+    "outputPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Zstandard\\obj\\",
     "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "C:\\Microsoft\\Xamarin\\NuGet",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+    ],
     "originalTargetFrameworks": [
       "netcoreapp3.0"
     ],
     "sources": {
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {

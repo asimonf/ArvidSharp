@@ -8,24 +8,33 @@
     ".NETCoreApp,Version=v3.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Cary\\.nuget\\packages\\": {}
+    "C:\\Users\\asimo\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
+      "projectUniqueName": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
       "projectName": "Zstandard",
-      "projectPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
-      "packagesPath": "C:\\Users\\Cary\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Cary\\RiderProjects\\Arvid\\Zstandard\\obj\\",
+      "projectPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Zstandard\\Zstandard.csproj",
+      "packagesPath": "C:\\Users\\asimo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Zstandard\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Cary\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\asimo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

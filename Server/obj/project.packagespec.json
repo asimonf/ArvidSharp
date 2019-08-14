@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Arvid\\Arvid.csproj",
-    "projectName": "Arvid",
-    "projectPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Arvid\\Arvid.csproj",
-    "outputPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Arvid\\obj\\",
+    "projectUniqueName": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Server\\Server.csproj",
+    "projectName": "Server",
+    "projectPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Server\\Server.csproj",
+    "outputPath": "C:\\Users\\asimo\\RiderProjects\\Arvid\\Server\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "C:\\Microsoft\\Xamarin\\NuGet",

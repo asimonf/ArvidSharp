@@ -2,207 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8475b2c2-1394-4b0b-a8aa-6f03aa3fcdf3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Arvid/riderModule.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Arvid/riderModule.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Arvid/Arvid.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/Arvid.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arvid.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arvid/obj/Arvid.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/obj/Arvid.csproj.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arvid/obj/Arvid.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/obj/Arvid.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arvid/obj/Debug/netcoreapp3.0/Arvid.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/obj/Debug/netcoreapp3.0/Arvid.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arvid/obj/Debug/netcoreapp3.0/Arvid.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/obj/Debug/netcoreapp3.0/Arvid.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arvid/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Arvid/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/obj/Client.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Client/obj/Client.csproj.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/obj/Client.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Client/obj/Client.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/obj/Debug/netcoreapp3.0/Client.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Client/obj/Debug/netcoreapp3.0/Client.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Client/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Client/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Zstandard/obj/Debug/netcoreapp3.0/Zstandard.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Zstandard/obj/Debug/netcoreapp3.0/Zstandard.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Zstandard/obj/Zstandard.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Zstandard/obj/Zstandard.csproj.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Zstandard/obj/Zstandard.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Zstandard/obj/Zstandard.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Zstandard/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Zstandard/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Zstandard/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Zstandard/obj/project.packagespec.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Blitter.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="66" column="12" lean-forward="true" selection-start-line="66" selection-start-column="12" selection-end-line="66" selection-end-column="12" />
-              <folding>
-                <marker date="1565760905579" expanded="true" signature="6:96" ph="..." />
-                <marker date="1565760905579" expanded="true" signature="120:4332" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="237:4330" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="838:1542" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="1291:1532" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="1571:1709" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="1745:1977" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="2101:2920" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="2426:2618" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="2952:4017" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="2978:3915" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="3021:3901" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="3641:3792" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="3962:4007" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="4048:4324" ph="{...}" />
-                <marker date="1565760905579" expanded="true" signature="4192:4314" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Arvid/CommandType.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="15" selection-start-column="15" selection-end-column="15" />
-              <folding>
-                <marker date="1565498533853" expanded="true" signature="15:582" ph="{...}" />
-                <marker date="1565498533853" expanded="true" signature="53:580" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Arvid/Arvid.csproj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Client.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="37">
-              <caret line="329" column="41" lean-forward="true" selection-start-line="329" selection-start-column="41" selection-end-line="329" selection-end-column="41" />
-              <folding>
-                <marker date="1565760919248" expanded="false" signature="6:152" ph="..." />
-                <marker date="1565760919248" expanded="true" signature="176:9442" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="215:9440" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="646:1096" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="1127:1241" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="1291:1900" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="1597:1841" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="2006:2748" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="2350:2615" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="2421:2601" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="2779:3419" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="2846:3112" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="3143:3255" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="3452:3884" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="3969:4741" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="4574:4731" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="4812:4957" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="4994:5166" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="5201:5636" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="5696:5928" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="5999:6341" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="6414:6697" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="6728:6936" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="6976:7185" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="7225:7442" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="7513:8420" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="7909:8410" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="8058:8365" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="8470:8701" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="8744:8965" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="9001:9200" ph="{...}" />
-                <marker date="1565760919248" expanded="true" signature="9237:9434" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentOutputPool.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="577">
-              <caret line="39" column="27" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
-              <folding>
-                <marker date="1565760634783" expanded="true" signature="6:58" ph="..." />
-                <marker date="1565760634783" expanded="true" signature="87:1193" ph="{...}" />
-                <marker date="1565760634783" expanded="true" signature="124:1191" ph="{...}" />
-                <marker date="1565760634783" expanded="true" signature="436:571" ph="{...}" />
-                <marker date="1565760634783" expanded="true" signature="657:954" ph="{...}" />
-                <marker date="1565760634783" expanded="true" signature="1005:1185" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkItemPool.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
-              <folding>
-                <marker date="1565760703454" expanded="false" signature="6:58" ph="..." />
-                <marker date="1565760703454" expanded="true" signature="87:1162" ph="{...}" />
-                <marker date="1565760703454" expanded="true" signature="126:1160" ph="{...}" />
-                <marker date="1565760703454" expanded="true" signature="389:469" ph="{...}" />
-                <marker date="1565760703454" expanded="true" signature="576:912" ph="{...}" />
-                <marker date="1565760703454" expanded="true" signature="961:1154" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0FB3A572-2B68-4865-ADC0-08D3BC4ECAD9/9b/78546431/Thread.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="79" column="16" selection-start-line="79" selection-start-column="16" selection-end-line="79" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorker.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="76" column="108" selection-start-line="76" selection-start-column="108" selection-end-line="76" selection-end-column="108" />
-              <folding>
-                <marker date="1565760767002" expanded="false" signature="6:110" ph="..." />
-                <marker date="1565760767002" expanded="true" signature="139:4176" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="185:4174" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="997:1321" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="1352:1480" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="1561:2045" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="1746:2035" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="2077:3926" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="2103:3841" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="2173:3827" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="2416:3697" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="3061:3609" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="3888:3916" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="3955:4004" ph="{...}" />
-                <marker date="1565760767002" expanded="true" signature="4032:4168" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkUnit.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
-              <folding>
-                <marker date="1565760669822" expanded="true" signature="42:234" ph="{...}" />
-                <marker date="1565760669822" expanded="true" signature="78:232" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkOutput.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
-              <folding>
-                <marker date="1565760580764" expanded="true" signature="27:207" ph="{...}" />
-                <marker date="1565760580764" expanded="true" signature="65:205" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -214,24 +39,23 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3DE6DD3E-164A-4258-BE3D-CC44439BB869/f0/75957f3b/WaitHandle.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0FB3A572-2B68-4865-ADC0-08D3BC4ECAD9/9b/78546431/Thread.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0FB3A572-2B68-4865-ADC0-08D3BC4ECAD9/61/223807c1/ParameterizedThreadStart.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Client/Blitter.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentOutputPool.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkOutput.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Client/Client.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkUnit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentWorker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Client/Blitter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Arvid/VideoModeInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Arvid/CommandType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Zstandard/ExternMethods.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Arvid/VideoMode.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Server/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0FB3A572-2B68-4865-ADC0-08D3BC4ECAD9/61/223807c1/ParameterizedThreadStart.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Arvid/Response/RegularResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Arvid/Response/EnumVideoResponse.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkUnit.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkOutput.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2FDF9784-29AB-4D65-8936-52C0A7F1403A/84/4a063f07/ConcurrentQueue`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Arvid/VideoMode.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Arvid/CommandType.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentWorker.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F54C35BC-2BC7-4F8C-A015-8A70B1C695A4/af/3ab0abaf/Queue`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Arvid/VideoModeInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FF22217A-734F-43E8-AC85-AEDCFC1EFA79/ea/c012caf1/Socket.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkItemPool.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Zstandard/ExternMethods.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0FB3A572-2B68-4865-ADC0-08D3BC4ECAD9/9b/78546431/Thread.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Client/Blit/SegmentOutputPool.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -250,9 +74,12 @@
         <option value="$PROJECT_DIR$/Client/Blit/SegmentWorkUnit.cs" />
         <option value="$PROJECT_DIR$/Client/Blit/SegmentWorkItemPool.cs" />
         <option value="$PROJECT_DIR$/Client/Blit/SegmentWorker.cs" />
-        <option value="$PROJECT_DIR$/Client/Blitter.cs" />
         <option value="$PROJECT_DIR$/Client/Client.cs" />
         <option value="$PROJECT_DIR$/Arvid/Arvid.csproj" />
+        <option value="$PROJECT_DIR$/Client/Blitter.cs" />
+        <option value="$PROJECT_DIR$/Server/Class1.cs" />
+        <option value="$PROJECT_DIR$/Server/Server.cs" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -261,70 +88,11 @@
       <list>
         <option value="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/vcs.xml" />
         <option value="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/indexLayout.xml" />
+        <option value="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/projectSettingsUpdater.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="258" />
-    <option name="y" value="18" />
-    <option name="width" value="1402" />
-    <option name="height" value="1002" />
-  </component>
-  <component name="ProjectView">
-    <navigator currentView="SolutionExplorer" proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="FileSystemExplorer" />
-      <pane id="SolutionExplorer">
-        <subPane>
-          <expand>
-            <path>
-              <item name="" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-            <path>
-              <item name="" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-            <path>
-              <item name="" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="Client" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-            <path>
-              <item name="" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="Client" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="Blit" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-            <path>
-              <item name="" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="Zstandard" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-            <path>
-              <item name="" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="Zstandard" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="lib" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-            <path>
-              <item name="" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="Arvid" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="Zstandard" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="lib" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="win" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-        <option name="show-all-files" value="false" />
-      </pane>
-      <pane id="AssemblyExplorer" />
-    </panes>
-  </component>
+  <component name="ProjectId" id="1PQTjnvmUyYW4S1HJYdSfeWOEbM" />
   <component name="PropertiesComponent">
     <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
     <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
@@ -356,6 +124,7 @@
       <updated>1565583420985</updated>
       <workItem from="1565583422314" duration="2177000" />
       <workItem from="1565745497731" duration="14639000" />
+      <workItem from="1565805474879" duration="4929000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1565615092140</created>
@@ -374,57 +143,31 @@
     <option name="localTasksCounter" value="3" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16816000" />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1719" height="932" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25300482" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="NuGet" order="7" weight="0.32925338" />
-      <window_info anchor="bottom" id="Performance Profiler" order="8" />
-      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Unit Tests" order="12" />
-      <window_info anchor="bottom" id="Terminal" order="13" />
-      <window_info anchor="bottom" id="Event Log" order="14" side_tool="true" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Errors In Solution" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Unit Tests Coverage" order="5" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
+    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="true" />
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Implement a blitter client and add Bindings for Zstandard" />
     <option name="LAST_COMMIT_MESSAGE" value="Implement a blitter client and add Bindings for Zstandard" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="250" y="339" key="Rider.ProjectTemplateDialog.Size" />
+    <state x="250" y="339" key="Rider.ProjectTemplateDialog.Size/1920.1080/1920.1080" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -435,269 +178,5 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Core/Class1.cs" />
-    <entry file="file://$PROJECT_DIR$/Arvid/VideoMode.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-          <folding>
-            <marker date="1565495595132" expanded="true" signature="15:99" ph="{...}" />
-            <marker date="1565495595132" expanded="true" signature="51:97" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Arvid/Response/EnumVideoResponse.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <marker date="1565497074672" expanded="true" signature="63:276" ph="{...}" />
-            <marker date="1565497074672" expanded="true" signature="154:274" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Arvid/Response/RegularResponse.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-          <folding>
-            <marker date="1565493084209" expanded="true" signature="63:218" ph="{...}" />
-            <marker date="1565493084209" expanded="true" signature="145:216" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Arvid/VideoModeInfo.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-          <folding>
-            <marker date="1565495729851" expanded="true" signature="54:236" ph="{...}" />
-            <marker date="1565495729851" expanded="true" signature="139:234" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Zstandard/libsamplerate-0.dll.config">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Zstandard/ExternMethods.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="9" column="37" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="37" />
-          <folding>
-            <marker date="1565747290867" expanded="false" signature="6:150" ph="..." />
-            <marker date="1565747290867" expanded="true" signature="171:3286" ph="{...}" />
-            <marker date="1565747290867" expanded="true" signature="208:3284" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Client.csproj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="20" lean-forward="true" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/F54C35BC-2BC7-4F8C-A015-8A70B1C695A4/af/3ab0abaf/Queue`1.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3DE6DD3E-164A-4258-BE3D-CC44439BB869/f0/75957f3b/WaitHandle.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="130" column="23" selection-start-line="130" selection-start-column="23" selection-end-line="130" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0FB3A572-2B68-4865-ADC0-08D3BC4ECAD9/61/223807c1/ParameterizedThreadStart.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2FDF9784-29AB-4D65-8936-52C0A7F1403A/84/4a063f07/ConcurrentQueue`1.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="71" column="16" selection-start-line="71" selection-start-column="16" selection-end-line="71" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0FB3A572-2B68-4865-ADC0-08D3BC4ECAD9/9b/78546431/Thread.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="79" column="16" selection-start-line="79" selection-start-column="16" selection-end-line="79" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkOutput.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
-          <folding>
-            <marker date="1565760580764" expanded="true" signature="27:207" ph="{...}" />
-            <marker date="1565760580764" expanded="true" signature="65:205" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentOutputPool.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="39" column="27" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
-          <folding>
-            <marker date="1565760634783" expanded="true" signature="6:58" ph="..." />
-            <marker date="1565760634783" expanded="true" signature="87:1193" ph="{...}" />
-            <marker date="1565760634783" expanded="true" signature="124:1191" ph="{...}" />
-            <marker date="1565760634783" expanded="true" signature="436:571" ph="{...}" />
-            <marker date="1565760634783" expanded="true" signature="657:954" ph="{...}" />
-            <marker date="1565760634783" expanded="true" signature="1005:1185" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkUnit.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
-          <folding>
-            <marker date="1565760669822" expanded="true" signature="42:234" ph="{...}" />
-            <marker date="1565760669822" expanded="true" signature="78:232" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorkItemPool.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="40" column="23" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
-          <folding>
-            <marker date="1565760703454" expanded="false" signature="6:58" ph="..." />
-            <marker date="1565760703454" expanded="true" signature="87:1162" ph="{...}" />
-            <marker date="1565760703454" expanded="true" signature="126:1160" ph="{...}" />
-            <marker date="1565760703454" expanded="true" signature="389:469" ph="{...}" />
-            <marker date="1565760703454" expanded="true" signature="576:912" ph="{...}" />
-            <marker date="1565760703454" expanded="true" signature="961:1154" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Blit/SegmentWorker.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="76" column="108" selection-start-line="76" selection-start-column="108" selection-end-line="76" selection-end-column="108" />
-          <folding>
-            <marker date="1565760767002" expanded="false" signature="6:110" ph="..." />
-            <marker date="1565760767002" expanded="true" signature="139:4176" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="185:4174" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="997:1321" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="1352:1480" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="1561:2045" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="1746:2035" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="2077:3926" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="2103:3841" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="2173:3827" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="2416:3697" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="3061:3609" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="3888:3916" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="3955:4004" ph="{...}" />
-            <marker date="1565760767002" expanded="true" signature="4032:4168" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Blitter.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="66" column="12" lean-forward="true" selection-start-line="66" selection-start-column="12" selection-end-line="66" selection-end-column="12" />
-          <folding>
-            <marker date="1565760905579" expanded="true" signature="6:96" ph="..." />
-            <marker date="1565760905579" expanded="true" signature="120:4332" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="237:4330" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="838:1542" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="1291:1532" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="1571:1709" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="1745:1977" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="2101:2920" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="2426:2618" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="2952:4017" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="2978:3915" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="3021:3901" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="3641:3792" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="3962:4007" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="4048:4324" ph="{...}" />
-            <marker date="1565760905579" expanded="true" signature="4192:4314" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Client.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="329" column="41" lean-forward="true" selection-start-line="329" selection-start-column="41" selection-end-line="329" selection-end-column="41" />
-          <folding>
-            <marker date="1565760919248" expanded="false" signature="6:152" ph="..." />
-            <marker date="1565760919248" expanded="true" signature="176:9442" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="215:9440" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="646:1096" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="1127:1241" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="1291:1900" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="1597:1841" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="2006:2748" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="2350:2615" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="2421:2601" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="2779:3419" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="2846:3112" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="3143:3255" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="3452:3884" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="3969:4741" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="4574:4731" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="4812:4957" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="4994:5166" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="5201:5636" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="5696:5928" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="5999:6341" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="6414:6697" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="6728:6936" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="6976:7185" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="7225:7442" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="7513:8420" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="7909:8410" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="8058:8365" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="8470:8701" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="8744:8965" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="9001:9200" ph="{...}" />
-            <marker date="1565760919248" expanded="true" signature="9237:9434" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Arvid/CommandType.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="15" selection-start-column="15" selection-end-column="15" />
-          <folding>
-            <marker date="1565498533853" expanded="true" signature="15:582" ph="{...}" />
-            <marker date="1565498533853" expanded="true" signature="53:580" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Arvid/Arvid.csproj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>
