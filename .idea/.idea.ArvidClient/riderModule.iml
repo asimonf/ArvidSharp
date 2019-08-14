@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module type="RIDER_MODULE" version="4">
-  <component name="NewModuleRootManager">
-    <content url="file://$USER_HOME$/.nuget/packages/zstandard.net/1.1.7/build/x64/libzstd.dll" />
-    <content url="file://$USER_HOME$/.nuget/packages/zstandard.net/1.1.7/build/x86/libzstd.dll" />
-    <content url="file://$MODULE_DIR$/../.." />
-    <orderEntry type="sourceFolder" forTests="false" />
-  </component>
-</module>
