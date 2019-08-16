@@ -1,6 +1,6 @@
 namespace Arvid
 {
-    public enum CommandType: ushort
+    public enum CommandEnum: ushort
     {
         Blit = 1,
         GetFrameNumber = 2,

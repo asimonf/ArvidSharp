@@ -65,12 +65,12 @@ namespace Arvid.Client
             return responseStruct.responseData;
         }
 
-        private unsafe void _createAndSendControlPayload(CommandType command, params ushort[] arguments)
+        private unsafe void _createAndSendControlPayload(CommandEnum command, params ushort[] arguments)
         {
             Debug.Assert(Connected);
 
             // the extra is for an id
-            var payloadSize = (sizeof(CommandType) >> 1) + arguments.Length + 1;
+            var payloadSize = (sizeof(CommandEnum) >> 1) + arguments.Length + 1;
             var payload = stackalloc ushort[payloadSize];
 
             payload[0] = (ushort) command;
@@ -85,7 +85,7 @@ namespace Arvid.Client
                 }
             }
 
-            var payloadSpan = new ReadOnlySpan<byte>(&payload, payloadSize << 1);
+            var payloadSpan = new ReadOnlySpan<byte>(payload, payloadSize << 1);
             _control.Send(payloadSpan);
         }
 
@@ -107,7 +107,7 @@ namespace Arvid.Client
                 return false;
             }
 
-            _createAndSendControlPayload(CommandType.Init);
+            _createAndSendControlPayload(CommandEnum.Init);
             var result = _getRegularResponse();
 
             return Connected = result >= 0;
@@ -117,7 +117,7 @@ namespace Arvid.Client
         {
             if (!Connected) return -1;
             
-            _createAndSendControlPayload(CommandType.Close);
+            _createAndSendControlPayload(CommandEnum.Close);
 
             var result = _getRegularResponse();
             
@@ -135,10 +135,10 @@ namespace Arvid.Client
         private unsafe void BlitterOnSegmentReady(SegmentWorkOutput output)
         {
             // the extra is for an id
-            var payloadSize = (sizeof(CommandType) >> 1) + 3 + output.CompressedSize;
+            var payloadSize = (sizeof(CommandEnum) >> 1) + 3 + output.CompressedSize;
             var payload = _arrayPool.Rent(payloadSize);
 
-            payload[0] = (ushort) CommandType.Blit;
+            payload[0] = (ushort) CommandEnum.Blit;
             payload[1] = output.CompressedSize;
             payload[2] = output.YPos;
             payload[3] = output.Stride;
@@ -171,7 +171,7 @@ namespace Arvid.Client
         {
             if (!Connected) return 0;
 
-            _createAndSendControlPayload(CommandType.GetFrameNumber);
+            _createAndSendControlPayload(CommandEnum.GetFrameNumber);
 
             return _getRegularResponse();
         }
@@ -182,7 +182,7 @@ namespace Arvid.Client
 
             _blitter.Wait();
             
-            _createAndSendControlPayload(CommandType.Vsync);
+            _createAndSendControlPayload(CommandEnum.Vsync);
 
             var response = _getRegularResponse();
 
@@ -199,7 +199,7 @@ namespace Arvid.Client
             if (!Connected) return -1;
 
             _createAndSendControlPayload(
-                CommandType.SetVideoMode,
+                CommandEnum.SetVideoMode,
                 (ushort) mode
             );
 
@@ -213,7 +213,7 @@ namespace Arvid.Client
             var normalizedFreq = (ushort)(frequency * 1000);
             
             _createAndSendControlPayload(
-                CommandType.GetVideoModeLines,
+                CommandEnum.GetVideoModeLines,
                 (ushort)mode,
                 normalizedFreq
             );
@@ -226,7 +226,7 @@ namespace Arvid.Client
             if (!Connected) return 0f;
 
             _createAndSendControlPayload(
-                CommandType.GetVideoModeFrequency,
+                CommandEnum.GetVideoModeFrequency,
                 (ushort) mode,
                 (ushort) lines
             );
@@ -239,7 +239,7 @@ namespace Arvid.Client
             if (!Connected) return 0;
             
             _createAndSendControlPayload(
-                CommandType.GetWidth
+                CommandEnum.GetWidth
             );
 
             return _getRegularResponse();
@@ -250,7 +250,7 @@ namespace Arvid.Client
             if (!Connected) return 0;
             
             _createAndSendControlPayload(
-                CommandType.GetHeight
+                CommandEnum.GetHeight
             );
 
             return _getRegularResponse();
@@ -261,7 +261,7 @@ namespace Arvid.Client
             if (!Connected) return 0;
             
             _createAndSendControlPayload(
-                CommandType.GetVideoModeCount
+                CommandEnum.GetVideoModeCount
             );
 
             return _getRegularResponse();
@@ -272,7 +272,7 @@ namespace Arvid.Client
             if (!Connected) return -1;
 
             _createAndSendControlPayload(
-                CommandType.EnumVideoModes
+                CommandEnum.EnumVideoModes
             );
 
             var count = _getRegularResponse();
@@ -304,7 +304,7 @@ namespace Arvid.Client
             if (!Connected) return -1;
             
             _createAndSendControlPayload(
-                CommandType.SetVirtualSync,
+                CommandEnum.SetVirtualSync,
                 (ushort) vsyncLine
             );
 
@@ -316,7 +316,7 @@ namespace Arvid.Client
             if (!Connected) return -1;
 
             _createAndSendControlPayload(
-                CommandType.SetLineMod,
+                CommandEnum.SetLineMod,
                 (ushort) mod
             );
             
@@ -328,7 +328,7 @@ namespace Arvid.Client
             if (!Connected) return -1;
 
             _createAndSendControlPayload(
-                CommandType.GetLineMod
+                CommandEnum.GetLineMod
             );
 
             return _getRegularResponse();
@@ -339,7 +339,7 @@ namespace Arvid.Client
             if (!Connected) return -1;
 
             _createAndSendControlPayload(
-                CommandType.PowerOff
+                CommandEnum.PowerOff
             );
 
             return _getRegularResponse();

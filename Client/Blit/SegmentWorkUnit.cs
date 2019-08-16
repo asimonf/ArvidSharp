@@ -2,7 +2,7 @@ using System;
 
 namespace Arvid.Client.Blit
 {
-    public struct SegmentWorkUnit
+    internal struct SegmentWorkUnit
     {
         public ushort[] Data;
         public int Offset;

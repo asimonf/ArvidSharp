@@ -1,6 +1,6 @@
 namespace Arvid.Client.Blit
 {
-    public struct SegmentWorkOutput
+    internal struct SegmentWorkOutput
     {
         public ushort[] Output;
         public ushort CompressedSize;

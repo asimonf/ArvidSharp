@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace Arvid.Client.Blit
 {
-    public class SegmentWorkItemPool
+    internal class SegmentWorkItemPool
     {
         private readonly ConcurrentQueue<SegmentWorkUnit> _pool;
 

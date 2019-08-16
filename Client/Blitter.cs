@@ -5,9 +5,9 @@ using Arvid.Client.Blit;
 
 namespace Arvid.Client
 {
-    public delegate void SegmentReadyHandler(SegmentWorkOutput output);
-    
-    public class Blitter: IDisposable
+    internal delegate void SegmentReadyHandler(SegmentWorkOutput output);
+
+    internal class Blitter: IDisposable
     {
         private const int SegmentWorkerCount = 4;
         

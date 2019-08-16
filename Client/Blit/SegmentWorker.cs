@@ -6,7 +6,7 @@ using Zstandard;
 
 namespace Arvid.Client.Blit
 {
-    public class SegmentWorker: IDisposable
+    internal class SegmentWorker: IDisposable
     {
         // Max segment size is 48KiB or 24KiW
         private const int MaxSegmentSize = 24576;
