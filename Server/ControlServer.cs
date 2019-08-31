@@ -1,120 +1,124 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net.Sockets;
+using Arvid.Response;
 
 namespace Arvid.Server
 {
     internal class ControlServer: BaseServer
     {
-        public bool Initialized { get; private set; }
+        private bool _initialized;
 
-        private ConcurrentQueue<ListenerMessage> _listenerMessages;
+        private delegate void Command(RegularResponse regularResponse);
         
+        private readonly ConcurrentQueue<ListenerMessage> _listenerMessages;
+        private readonly Dictionary<CommandEnum, Command> _commandMap;
+
         public ControlServer(Socket socket, ConcurrentQueue<ListenerMessage> listenerMessages) : base(socket)
         {
             _listenerMessages = listenerMessages;
+            _commandMap = new Dictionary<CommandEnum, Command>();
+
+            var commandEnumValues = Enum.GetValues(typeof(CommandEnum));
+
+            foreach (var commandValue in commandEnumValues)
+            {
+                var commandEnum = (CommandEnum) commandValue;
+                
+                // Ignore these for the map
+                switch (commandEnum)
+                {
+                    case CommandEnum.Init:
+                    case CommandEnum.Blit:
+                        continue;
+                }
+
+                // Create delegate and add to the delegateMap
+                var method = GetType().GetMethod(commandValue.ToString());
+                var action = Delegate.CreateDelegate(typeof(Command), method);
+                _commandMap.Add(commandEnum, action as Command);
+            }
         }
 
         protected override unsafe void DoWork()
         {
-            var receiveBuffer = stackalloc ushort[6];
-            var receiveSpan = new Span<byte>(receiveBuffer, 6);
-            
+            var response = new RegularResponse();
+            var receiveSpan = new Span<byte>(response.rawData, sizeof(RegularResponse));
+
             while (true)
             {
                 var receivedBytes = _socket.Receive(receiveSpan);
 
-                var command = (CommandEnum)receiveBuffer[0];
+                var command = (CommandEnum) response.id;
 
-                switch (command)
+                if (command == CommandEnum.Init)
                 {
-                    case CommandEnum.Init:
-                        Init();
-                        break;
-                    case CommandEnum.Close:
-                        Close();                        
-                        break;
-                    case CommandEnum.Blit:
-                        Blit();
-                        break;
-                    case CommandEnum.GetFrameNumber:
-                        break;
-                    case CommandEnum.Vsync:
-                        break;
-                    case CommandEnum.SetVideoMode:
-                        break;
-                    case CommandEnum.GetVideoModeLines:
-                        break;
-                    case CommandEnum.GetVideoModeFrequency:
-                        break;
-                    case CommandEnum.GetWidth:
-                        break;
-                    case CommandEnum.GetHeight:
-                        break;
-                    case CommandEnum.EnumVideoModes:
-                        break;
-                    case CommandEnum.GetVideoModeCount:
-                        break;
-                    case CommandEnum.GetLineMod:
-                        break;
-                    case CommandEnum.SetLineMod:
-                        break;
-                    case CommandEnum.SetVirtualSync:
-                        break;
-                    case CommandEnum.UpdateStart:
-                        break;
-                    case CommandEnum.UpdatePacket:
-                        break;
-                    case CommandEnum.UpdateEnd:
-                        break;
-                    case CommandEnum.PowerOff:
-                        PowerOff();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    Init(response);
+                    continue;
                 }
+
+                if (!_initialized) continue;
+
+                _commandMap[command](response);
             }
         }
+        
+        // Commands
 
-        private void Init()
+        private unsafe void Init(RegularResponse regularResponse)
         {
-            if (Initialized) return;
-
-            Initialized = true;
+            if (!_initialized)
+            {
+                _listenerMessages.Enqueue(ListenerMessage.Init);
+                _initialized = true;
+            }
             
-            _listenerMessages.Enqueue(ListenerMessage.Init);
+            var sendBuffer = stackalloc ushort[6];
+            _socket.Send(new ReadOnlySpan<byte>(sendBuffer, 12));
         }
 
-        private void Close()
+        private unsafe void Close(RegularResponse regularResponse)
         {
             _listenerMessages.Enqueue(ListenerMessage.Stop);
+            
+            
+            var sendBuffer = stackalloc ushort[6];
+            _socket.Send(new ReadOnlySpan<byte>(sendBuffer, 12));
         }
 
-        private void PowerOff()
+        private void PowerOff(RegularResponse regularResponse)
         {
             _listenerMessages.Enqueue(ListenerMessage.ShutDown);
         }
-        
-        private void Blit() {}
 
-        private int GetFrameNumber()
+        private unsafe void GetFrameNumber(RegularResponse regularResponse)
         {
-            return 0;
+            var response = new RegularResponse();
+            response.responseData = (int)PruManager.GetFrameNumber();
+            _socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(RegularResponse)));
         }
-        
-        private void Vsync() {}
-        private void SetVideoMode() {}
-        private void GetVideoModeLines() {}
-        private void GetVideoModeFrequency() {}
-        private void GetWidth() {}
-        private void GetHeight() {}
-        private void EnumVideoModes() {}
-        private void GetVideoModeCount() {}
-        private void GetLineMod() {}
-        private void SetLineMod() {}
-        private void SetVirtualSync() {}
-        private void UpdateStart() {}
-        private void UpdatePacket() {}
-        private void UpdateEnd() {}
+
+        private unsafe void Vsync(ReadOnlySpan<byte> receivedData)
+        {
+            PruManager.WaitForVsync();
+            var response = new VsyncResponse();
+            response.frameNumber = PruManager.GetFrameNumber();
+            response.buttons = PruManager.GetButtons();
+            _socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(VsyncResponse)));
+        }
+        private void SetVideoMode(ReadOnlySpan<byte> receivedData) {}
+        private void GetVideoModeLines(ReadOnlySpan<byte> receivedData) {}
+        private void GetVideoModeFrequency(ReadOnlySpan<byte> receivedData) {}
+        private void GetWidth(ReadOnlySpan<byte> receivedData) {}
+        private void GetHeight(ReadOnlySpan<byte> receivedData) {}
+        private void EnumVideoModes(ReadOnlySpan<byte> receivedData) {}
+        private void GetVideoModeCount(ReadOnlySpan<byte> receivedData) {}
+        private void GetLineMod(ReadOnlySpan<byte> receivedData) {}
+        private void SetLineMod(ReadOnlySpan<byte> receivedData) {}
+        private void SetVirtualSync(ReadOnlySpan<byte> receivedData) {}
+        private void UpdateStart(ReadOnlySpan<byte> receivedData) {}
+        private void UpdatePacket(ReadOnlySpan<byte> receivedData) {}
+        private void UpdateEnd(ReadOnlySpan<byte> receivedData) {}
     }
 }

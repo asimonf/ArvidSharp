@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Mono.Unix.Native;
 
 namespace Arvid.Server
 {
     public class Listener
     {
+        public enum StateEnum
+        {
+            None = 0,
+            WaitingForConnections = 1,
+            Initializing = 2,
+            Initialized = 3
+        }
+        
         private readonly IPEndPoint _controlEndPoint;
         private readonly IPEndPoint _dataEndPoint;
         
@@ -19,17 +22,13 @@ namespace Arvid.Server
         private readonly Socket _dataListener;
 
         private readonly ConcurrentQueue<ListenerMessage> _listenerMessages;
-
+        
         private DataServer _dataServer;
         private ControlServer _controlServer;
 
-        private PruManager _pruManager;
+        public StateEnum State { get; private set; }
         
-        public bool HasClient { get; private set; }
-        
-        public bool Initialized { get; private set; }
-
-        public Listener(PruManager pruManager)
+        public Listener()
         {
             var ip = IPAddress.Any;
             
@@ -45,7 +44,7 @@ namespace Arvid.Server
             _controlListener.Listen(1);
             _dataListener.Listen(1);
             
-            _pruManager = new PruManager();
+            _listenerMessages = new ConcurrentQueue<ListenerMessage>();
         }
 
         private void _resetServers()
@@ -64,6 +63,8 @@ namespace Arvid.Server
             
             _controlServer = new ControlServer(handler, _listenerMessages);
             _controlServer.Start();
+            
+            State = State == StateEnum.WaitingForConnections ? StateEnum.Initializing : StateEnum.Initialized;
         }
 
         private void _acceptDataConnection(IAsyncResult ar)
@@ -73,40 +74,33 @@ namespace Arvid.Server
             var handler = listener.EndAccept(ar);
             
             _dataServer = new DataServer(handler);
+            _dataServer.Start();
+            
+            State = State == StateEnum.WaitingForConnections ? StateEnum.Initializing : StateEnum.Initialized;
         }
 
-        public bool Listen()
+        public void Listen()
         {
-            if (HasClient) return false;
-            
-            var waitHandles = new WaitHandle[2];
+            if (State >= StateEnum.WaitingForConnections) return;
 
             _resetServers();
 
-            waitHandles[0] = _controlListener.BeginAccept(_acceptControlConnection, _controlListener).AsyncWaitHandle;
-            waitHandles[1] = _dataListener.BeginAccept(_acceptDataConnection, _dataListener).AsyncWaitHandle;
-
-            WaitHandle.WaitAll(waitHandles);
-
-            if (_controlServer == null || _dataServer == null)
-                _resetServers();            
-
-            return HasClient = _controlServer != null && _dataServer != null;
+            _controlListener.BeginAccept(_acceptControlConnection, _controlListener);
+            _dataListener.BeginAccept(_acceptDataConnection, _dataListener);
+            
+            State = StateEnum.WaitingForConnections;
         }
 
         public void DoMessageLoop()
         {
-            bool hasMessages;
-            
-            while (hasMessages =_listenerMessages.TryDequeue(out var result))
+            while (_listenerMessages.TryDequeue(out var result))
             {
                 switch (result)
                 {
                     case ListenerMessage.Init:
-                        
-                        _dataServer.Start();
                         break;
                     case ListenerMessage.Stop:
+                        Disconnect();
                         break;
                     case ListenerMessage.None:
                         break;
@@ -121,24 +115,7 @@ namespace Arvid.Server
         public void Disconnect()
         {
             _resetServers();
+            State = StateEnum.None;
         }
-
-        public void Init()
-        {
-            if (Initialized) return;
-            
-            var euid = Syscall.geteuid();
-
-            if (euid != 0)
-            {
-                throw new Exception("arvid: error ! permission check failed. Superuser required.\n");
-            }
-            
-            _pruManager.Init();
-
-            Initialized = true;
-        }
-        
-        
     }
 }

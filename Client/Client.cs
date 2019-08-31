@@ -48,20 +48,8 @@ namespace Arvid.Client
         {
             Debug.Assert(Connected);
             
-            Span<byte> responseData = stackalloc byte[sizeof(RegularResponse)];
-            _control.Receive(responseData);
-            
             var responseStruct = new RegularResponse();
-            fixed (byte* responsePtr = responseData)
-            {
-                Buffer.MemoryCopy(
-                    responsePtr, 
-                    &responseStruct, 
-                    sizeof(RegularResponse), 
-                    sizeof(RegularResponse)
-                );
-            }
-
+            _control.Receive(new Span<byte>(responseStruct.rawData, sizeof(RegularResponse)));
             return responseStruct.responseData;
         }
 
