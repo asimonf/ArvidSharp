@@ -18,7 +18,7 @@ namespace Arvid.Client
 
         private readonly ArrayPool<ushort> _arrayPool;
 
-        private ushort _nextId = 0;
+        private ushort _nextId;
 
         private Blitter _blitter;
         
@@ -44,37 +44,42 @@ namespace Arvid.Client
             _data.Dispose();
         }
 
-        private unsafe int _getRegularResponse()
+        private unsafe int _getRegularResponse(ushort id)
         {
-            Debug.Assert(Connected);
+            var responseStruct = new StandardResponse();
+
+            do
+            {
+                _control.Receive(new Span<byte>(responseStruct.rawData, sizeof(StandardResponse)));
+            } while (id != responseStruct.id);
             
-            var responseStruct = new RegularResponse();
-            _control.Receive(new Span<byte>(responseStruct.rawData, sizeof(RegularResponse)));
             return responseStruct.responseData;
         }
 
-        private unsafe void _createAndSendControlPayload(CommandEnum command, params ushort[] arguments)
-        {
+        private unsafe ushort _createAndSendControlPayload(
+            CommandEnum command, 
+            ReadOnlySpan<ushort> arguments = new ReadOnlySpan<ushort>()
+        ) {
             Debug.Assert(Connected);
 
+            var id = _nextId++;
+
             // the extra is for an id
-            var payloadSize = (sizeof(CommandEnum) >> 1) + arguments.Length + 1;
+            var payloadSize = sizeof(CommandEnum) / 2 + arguments.Length + 1;
             var payload = stackalloc ushort[payloadSize];
 
             payload[0] = (ushort) command;
-            payload[1] = _nextId++;
+            payload[1] = id;
 
-            if (arguments.Length > 0)
+            for (var i = 0; i < arguments.Length; i++)
             {
-                fixed (ushort* argumentsPtr = arguments)
-                {
-                    var copySize = arguments.Length << 1;
-                    Buffer.MemoryCopy(argumentsPtr, &payload[2], copySize, copySize);
-                }
+                payload[i + 2] = arguments[i];
             }
 
-            var payloadSpan = new ReadOnlySpan<byte>(payload, payloadSize << 1);
+            var payloadSpan = new ReadOnlySpan<byte>(payload, payloadSize * 2);
             _control.Send(payloadSpan);
+
+            return id;
         }
 
         public bool Connect()
@@ -95,8 +100,8 @@ namespace Arvid.Client
                 return false;
             }
 
-            _createAndSendControlPayload(CommandEnum.Init);
-            var result = _getRegularResponse();
+            var id = _createAndSendControlPayload(CommandEnum.Init);
+            var result = _getRegularResponse(id);
 
             return Connected = result >= 0;
         }
@@ -105,9 +110,8 @@ namespace Arvid.Client
         {
             if (!Connected) return -1;
             
-            _createAndSendControlPayload(CommandEnum.Close);
-
-            var result = _getRegularResponse();
+            var id = _createAndSendControlPayload(CommandEnum.Close);
+            var result = _getRegularResponse(id);
             
             _control.Disconnect(true);
             _data.Disconnect(true);
@@ -159,9 +163,8 @@ namespace Arvid.Client
         {
             if (!Connected) return 0;
 
-            _createAndSendControlPayload(CommandEnum.GetFrameNumber);
-
-            return _getRegularResponse();
+            var id = _createAndSendControlPayload(CommandEnum.GetFrameNumber);
+            return _getRegularResponse(id);
         }
 
         public int WaitForVsync()
@@ -170,9 +173,8 @@ namespace Arvid.Client
 
             _blitter.Wait();
             
-            _createAndSendControlPayload(CommandEnum.Vsync);
-
-            var response = _getRegularResponse();
+            var id = _createAndSendControlPayload(CommandEnum.Vsync);
+            var response = _getRegularResponse(id);
 
             Span<byte> responseData = stackalloc byte[4];
             _control.Receive(responseData);
@@ -182,88 +184,104 @@ namespace Arvid.Client
             return response;
         }
 
-        public int SetVideoMode(VideoMode mode, int lines)
+        public unsafe int SetVideoMode(VideoMode mode, int lines)
         {
             if (!Connected) return -1;
 
-            _createAndSendControlPayload(
+            var arguments = stackalloc ushort[]
+            {
+                (ushort) mode,
+                (ushort) lines,
+            };
+
+            var id = _createAndSendControlPayload(
                 CommandEnum.SetVideoMode,
-                (ushort) mode
+                new Span<ushort>(arguments, 2)
             );
 
-            return _getRegularResponse();
+            return _getRegularResponse(id);
         }
 
-        public int GetVideoModeLines(VideoMode mode, float frequency)
+        public unsafe int GetVideoModeLines(VideoMode mode, float frequency)
         {
             if (!Connected) return -1;
 
             var normalizedFreq = (ushort)(frequency * 1000);
-            
-            _createAndSendControlPayload(
-                CommandEnum.GetVideoModeLines,
-                (ushort)mode,
+
+            var arguments = stackalloc ushort[]
+            {
+                (ushort) mode,
                 normalizedFreq
+            };
+            
+            var id = _createAndSendControlPayload(
+                CommandEnum.GetVideoModeLines,
+                new ReadOnlySpan<ushort>(arguments, 2)
             );
 
-            return _getRegularResponse();
+            return _getRegularResponse(id);
         }
 
-        public float GetVideoModeRefreshRate(VideoMode mode, int lines)
+        public unsafe float GetVideoModeRefreshRate(VideoMode mode, int lines)
         {
             if (!Connected) return 0f;
-
-            _createAndSendControlPayload(
-                CommandEnum.GetVideoModeFrequency,
+            
+            var arguments = stackalloc ushort[]
+            {
                 (ushort) mode,
                 (ushort) lines
+            };
+
+            var id = _createAndSendControlPayload(
+                CommandEnum.GetVideoModeFrequency,
+                new ReadOnlySpan<ushort>(arguments, 2)
             );
 
-            return _getRegularResponse() / 1000.0f;
+            return _getRegularResponse(id) / 1000.0f;
         }
 
         public int GetWidth()
         {
             if (!Connected) return 0;
             
-            _createAndSendControlPayload(
+            var id = _createAndSendControlPayload(
                 CommandEnum.GetWidth
             );
 
-            return _getRegularResponse();
+            return _getRegularResponse(id);
         }
         
         public int GetHeight()
         {
             if (!Connected) return 0;
             
-            _createAndSendControlPayload(
+            var id = _createAndSendControlPayload(
                 CommandEnum.GetHeight
             );
 
-            return _getRegularResponse();
+            return _getRegularResponse(id);
         }
 
         public int GetVideoModeCount()
         {
             if (!Connected) return 0;
             
-            _createAndSendControlPayload(
+            var id = _createAndSendControlPayload(
                 CommandEnum.GetVideoModeCount
             );
 
-            return _getRegularResponse();
+            return _getRegularResponse(id);
         }
 
         public int EnumVideoModes(ref VideoModeInfo[] videoModeInfos)
         {
             if (!Connected) return -1;
 
-            _createAndSendControlPayload(
+            var id = _createAndSendControlPayload(
                 CommandEnum.EnumVideoModes
             );
 
-            var count = _getRegularResponse();
+            var count = _getRegularResponse(id);
 
             Span<byte> responseData = stackalloc byte[120];
             _control.Receive(responseData);
@@ -287,50 +305,60 @@ namespace Arvid.Client
             }
         }
 
-        public int SetVirtualSync(int vsyncLine)
+        public unsafe int SetVirtualSync(int vsyncLine)
         {
             if (!Connected) return -1;
+
+            var arguments = stackalloc ushort[]
+            {
+                (ushort) vsyncLine,
+            };
             
-            _createAndSendControlPayload(
+            var id = _createAndSendControlPayload(
                 CommandEnum.SetVirtualSync,
-                (ushort) vsyncLine
+                new ReadOnlySpan<ushort>(arguments, 1)
             );
 
-            return 0;
+            return _getRegularResponse(id);
         }
 
-        public int SetLinePosMod(int mod)
+        public unsafe int SetLinePosMod(int mod)
         {
             if (!Connected) return -1;
 
-            _createAndSendControlPayload(
+            var arguments = stackalloc ushort[]
+            {
+                (ushort) mod,
+            };
+            
+            var id = _createAndSendControlPayload(
                 CommandEnum.SetLineMod,
-                (ushort) mod
+                new ReadOnlySpan<ushort>(arguments, 1)
             );
             
-            return 0;
+            return _getRegularResponse(id);
         }
 
         public int GetLinePosMod()
         {
             if (!Connected) return -1;
 
-            _createAndSendControlPayload(
+            var id = _createAndSendControlPayload(
                 CommandEnum.GetLineMod
             );
 
-            return _getRegularResponse();
+            return _getRegularResponse(id);
         }
 
         public int PowerOffServer()
         {
             if (!Connected) return -1;
 
-            _createAndSendControlPayload(
+            var id = _createAndSendControlPayload(
                 CommandEnum.PowerOff
             );
-
-            return _getRegularResponse();
+            
+            return _getRegularResponse(id);
         }
     }
 }

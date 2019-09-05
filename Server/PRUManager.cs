@@ -233,5 +233,10 @@ namespace Arvid.Server
         {
             return ~_pruMem[PruDataGpioState];
         }
+
+        public static void SetVideoMode(VideoMode mode, int lines)
+        {
+            
+        }
     }
 }

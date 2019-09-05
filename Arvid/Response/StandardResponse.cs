@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace Arvid.Response
 {
     [StructLayout(LayoutKind.Explicit, Pack = 2)]
-    public ref struct RegularResponse
+    public ref struct StandardResponse
     {
         [FieldOffset(0)]
         public ushort id;
