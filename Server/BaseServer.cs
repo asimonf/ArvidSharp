@@ -6,13 +6,13 @@ namespace Arvid.Server
     internal abstract class BaseServer
     {
         private readonly Thread _thread;
-        protected readonly Socket _socket;
+        protected readonly Socket Socket;
 
         public bool Receiving => _thread.IsAlive;
 
         protected BaseServer(Socket socket)
         {
-            _socket = socket;
+            Socket = socket;
             _thread = new Thread(DoWork);
         }
 

@@ -99,6 +99,7 @@ namespace Arvid.Client
                     _startWorkEvent.WaitOne();
 
                     // Wait for all of them to finish
+                    // ReSharper disable once CoVariantArrayConversion
                     WaitHandle.WaitAll(_finishWorkEvents);
 
                     foreach (var worker in _segmentWorkers)

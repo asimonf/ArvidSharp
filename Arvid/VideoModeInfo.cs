@@ -7,5 +7,11 @@ namespace Arvid
     {
         public readonly ushort Width;
         public readonly VideoMode VideoMode;
+
+        public VideoModeInfo(ushort width, VideoMode videoMode)
+        {
+            Width = width;
+            VideoMode = videoMode;
+        }
     }
 }

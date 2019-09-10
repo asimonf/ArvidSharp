@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using Mono.Unix.Native;
@@ -39,16 +38,26 @@ namespace Arvid.Server
         // Memory size of the shared memory pool of UIO
         private const int MemSize = 0x400000;
 
+        private static int _ddrFd;
+        
         private static uint _ddrAddress;
         private static unsafe uint* _pruMem;
         private static unsafe uint* _pruSharedMem;
         private static unsafe uint* _ddrMem;
         
-        private static int _ddrFd;
-        private static uint _linePosMod;
-        private static bool _interlacing;
+        // Geometry
 
-        private static uint _height;
+        public static bool Interlacing { get; private set; }
+
+        public static ushort LinePosMod { get; private set; }
+
+        public static ushort Width { get; private set; }
+        public static ushort Height { get; private set; }
+        public static ushort Lines { get; private set; }
+
+        public static int VsyncLine { get; private set; }
+
+        private static readonly unsafe ushort*[] FrameBuffers = new ushort*[2];
 
         public static bool Initialized { get; private set; }
 
@@ -92,12 +101,11 @@ namespace Arvid.Server
             // Wait for the module to be loaded
             Thread.Sleep(100);
 
-            int res;
-            
             //try to find uio address
             _ddrAddress = 0;
-            for (var i = 0; i < 8; i++) {
-                res = _getUioAddress(i);
+            for (var i = 0; i < 8; i++)
+            {
+                var res = _getUioAddress(i);
                 if (res == 0 && _ddrAddress != 0) {
                     break;
                 }
@@ -110,9 +118,7 @@ namespace Arvid.Server
 
         private static void _initPruss()
         {
-            int res;
-            
-            res = NativeDriver.prussdrv_init();
+            var res = NativeDriver.prussdrv_init();
             if (res != 0) {
                 throw new Exception($"arvid: prussdrv_init failed: {res}\n");
             }
@@ -137,8 +143,6 @@ namespace Arvid.Server
 
         private static unsafe void _initMemory()
         {
-            int fd;
-
             //map internal pru memory 
             NativeDriver.prussdrv_map_prumem(NativeDriver.PRUSS0_PRU1_DATARAM, out var pruMem);
             _pruMem = (uint*) pruMem.ToPointer();
@@ -146,10 +150,10 @@ namespace Arvid.Server
             _pruSharedMem = (uint*) pruSharedMem.ToPointer();
             
             //set video mode info to pru
-            _setPruMem(320, 252, 0);
+            _setPruMem(VideoMode.Mode320, 252);
 
             //map DDR memory
-            fd = Syscall.open("/dev/mem", OpenFlags.O_RDWR);
+            var fd = Syscall.open("/dev/mem", OpenFlags.O_RDWR);
             if (fd < 0) {
                 throw new Exception($"arvid: failed to open /dev/mem {fd}\n");
             }
@@ -168,38 +172,59 @@ namespace Arvid.Server
             }
 
             _ddrMem[0] = 0;
+            
+            FrameBuffers[0] = (ushort*) &_ddrMem[16];
+            FrameBuffers[1] = (ushort*) &_ddrMem[16 + (0x100000 >> 2)]; //4 bytes per int
         }
 
-        private static unsafe void _setPruMem(uint fbWidth, uint fbLines, int mode)
+        private static void _setPruMem(VideoMode mode, int lines)
         {
+            _setPruMem((int) mode, lines);
+        }
+
+        private static unsafe void _setPruMem(int mode, int fbLines)
+        {
+            var fbWidth = VideoModeHelpers.ModeWidthTable[mode];
             //note: pruMem[1] contains current frame number
             _pruMem[PruDataFbAddr] = _ddrAddress;
 
             //set BLOCK_COUNT to PRU (horizontal resolution)
             var blockCnt = fbWidth / 32;
             if ((fbWidth % 32) == 0) {
-                _pruMem[PruDataBlockCount] = blockCnt; //stream 32 pixels per block (64 bytes) 
+                _pruMem[PruDataBlockCount] = (uint)blockCnt; //stream 32 pixels per block (64 bytes) 
             } else {
                 //stream one more block
                 blockCnt++;
                 //set flag to properly adjust the next line address
                 //note: '<< 17' means 16 + 1. 16 to offset to high word, 1 to multiply the value * 2 
                 //to get number of bytes to detract from the frame-buffer address
-                _pruMem[PruDataBlockCount] = blockCnt | ((32 - (fbWidth % 32)) << 17) ; //stream 32 pixels per block (64 bytes) 
+                _pruMem[PruDataBlockCount] = (uint)(blockCnt | ((32 - (fbWidth % 32)) << 17)); //stream 32 pixels per block (64 bytes) 
             }
 
             //set TOTAL_LINES to PRU (vertical resolution)
-            _pruMem[PruDataTotalLines] = fbLines;
-            _pruMem[PruDataLinePosMod] = _linePosMod;
+            _pruMem[PruDataTotalLines] = (uint)fbLines;
+            _pruMem[PruDataLinePosMod] = LinePosMod;
 	
             //Universal timing data
-            var entry = RateTable.ModeCyclesTable[mode];
+            var entry = VideoModeHelpers.ModeCyclesTable[mode];
             
             _pruMem[PruDataUniversalTimings] = entry.PixelData();
             _pruMem[PruDataUniversalTimings + 1] = entry.TimingData();
 
             //Interlacing
-            _pruMem[PruDataInterlacingEnabled] = _interlacing ? uint.MaxValue : 0;
+            _pruMem[PruDataInterlacingEnabled] = Interlacing ? uint.MaxValue : 0;
+        }
+        
+        private static void _initFrameBuffers(VideoMode mode, ushort lines, bool noFbClear) {
+            Lines = lines;
+            Width = (ushort)VideoModeHelpers.ModeWidthTable[(int) mode];
+            Height = 224;
+
+            if (noFbClear) return;
+            
+            //clean both frames with black color
+//            arvid_fill_rect(0, 0, 0, ap.fbWidth, ap.lines, 0);
+//            arvid_fill_rect(1, 0, 0, ap.fbWidth, ap.lines, 0);
         }
 
         public static void Init()
@@ -215,6 +240,8 @@ namespace Arvid.Server
             _initPruss();
             _initMemory();
 
+            VsyncLine = -1;
+            
             Initialized = true;
         }
 
@@ -223,7 +250,7 @@ namespace Arvid.Server
             return _pruMem[PruDataFrameNumber];
         }
 
-        public static unsafe void WaitForVsync()
+        public static void WaitForVsync()
         {
             NativeDriver.prussdrv_pru_wait_event(NativeDriver.PRU_EVTOUT_2);
             NativeDriver.prussdrv_pru_clear_event(NativeDriver.PRU_EVTOUT_2, NativeDriver.PRU0_ARM_INTERRUPT);
@@ -234,9 +261,43 @@ namespace Arvid.Server
             return ~_pruMem[PruDataGpioState];
         }
 
-        public static void SetVideoMode(VideoMode mode, int lines)
+        public static unsafe void SetVideoMode(VideoMode mode, ushort lines)
         {
+            if (lines == Lines)
+            {
+                _setPruMem(mode, lines);
+                _ddrMem[0] = 0;
+                _initFrameBuffers(mode, lines, false);
+                return;
+            }
             
+            FrameStreamer.PauseAtNextFrame();
+            
+            _setPruMem(mode, lines);
+            _ddrMem[0] = 0;
+            _initFrameBuffers(mode, lines, false);
+
+            VsyncLine = -1;
+
+            FrameStreamer.Resume();
+        }
+
+        public static void SetVsyncLine(int line)
+        {
+            if (line < 0) VsyncLine = -1;
+            else if (line > Height) VsyncLine = Height;
+            else VsyncLine = line;
+        }
+
+        public static void SetLinePosMod(ushort linePosMod)
+        {
+            if (linePosMod < 1) {
+                linePosMod = 1;
+            } else if (linePosMod > 111) {
+                linePosMod = 111;
+            }
+
+            LinePosMod = linePosMod;
         }
     }
 }

@@ -273,7 +273,7 @@ namespace Arvid.Client
             return _getRegularResponse(id);
         }
 
-        public int EnumVideoModes(ref VideoModeInfo[] videoModeInfos)
+        public int EnumVideoModes(Span<VideoModeInfo> videoModes)
         {
             if (!Connected) return -1;
 
@@ -286,17 +286,17 @@ namespace Arvid.Client
             Span<byte> responseData = stackalloc byte[120];
             _control.Receive(responseData);
 
-            if (count <= 0 || videoModeInfos.Length < count) return -1;
+            if (count <= 0 || videoModes.Length < count) return -1;
 
             unsafe
             {
-                fixed (VideoModeInfo* videoModeInfosPtr = videoModeInfos)
+                fixed (VideoModeInfo* videoModesPtr = videoModes)
                 fixed (byte* responseDataPtr = responseData)
                 {
                     Buffer.MemoryCopy(
                         responseDataPtr,
-                        videoModeInfosPtr,
-                        sizeof(VideoModeInfo) * videoModeInfos.Length,
+                        videoModesPtr,
+                        sizeof(VideoModeInfo) * videoModes.Length,
                         sizeof(VideoModeInfo) * count
                     );
                 }

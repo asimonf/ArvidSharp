@@ -9,6 +9,8 @@ namespace Arvid.Response
         public ushort id;
         [FieldOffset(2)]
         public int responseData;
+        [FieldOffset(2)]
+        public float floatResponse;
 
         [FieldOffset(0)]
         public unsafe fixed byte rawData[6];

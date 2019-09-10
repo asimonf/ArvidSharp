@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Sockets;
 using Arvid.Response;
 
@@ -57,7 +58,7 @@ namespace Arvid.Server
 
             while (true)
             {
-                var receivedWords = _socket.Receive(receiveSpan) / 2;
+                var receivedWords = Socket.Receive(receiveSpan) / 2;
 
                 Debug.Assert(receivedWords >= 2);
 
@@ -82,17 +83,22 @@ namespace Arvid.Server
         
         // Commands
 
-        private unsafe void _sendEmptyAnswer()
+        private unsafe void _sendEmptyResponse()
         {
             var sendBuffer = stackalloc ushort[6];
-            _socket.Send(new ReadOnlySpan<byte>(sendBuffer, 12));
+            Socket.Send(new ReadOnlySpan<byte>(sendBuffer, 12));
         }
         
         private unsafe void _sendStandardResponse(int responseData)
         {
-            var response = new StandardResponse();
-            response.responseData = responseData;
-            _socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(StandardResponse)));
+            var response = new StandardResponse {responseData = responseData};
+            Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(StandardResponse)));
+        }
+        
+        private unsafe void _sendStandardResponse(float responseData)
+        {
+            var response = new StandardResponse {floatResponse = responseData};
+            Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(StandardResponse)));
         }
 
         private void Init()
@@ -103,18 +109,18 @@ namespace Arvid.Server
                 _initialized = true;
             }
             
-            _sendEmptyAnswer();
+            _sendEmptyResponse();
         }
 
         private void Close()
         {
-            _sendEmptyAnswer();
+            _sendEmptyResponse();
             _listenerMessages.Enqueue(ListenerMessage.Stop);
         }
 
         private void PowerOff()
         {
-            _sendEmptyAnswer();
+            _sendEmptyResponse();
             _listenerMessages.Enqueue(ListenerMessage.ShutDown);
         }
 
@@ -126,30 +132,155 @@ namespace Arvid.Server
         private unsafe void Vsync()
         {
             PruManager.WaitForVsync();
-            var response = new VsyncResponse();
-            response.frameNumber = PruManager.GetFrameNumber();
-            response.buttons = PruManager.GetButtons();
-            _socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(VsyncResponse)));
+            var response = new VsyncResponse
+            {
+                frameNumber = PruManager.GetFrameNumber(), buttons = PruManager.GetButtons()
+            };
+            Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(VsyncResponse)));
         }
 
         private void SetVideoMode(ReadOnlySpan<ushort> payload)
         {
-            var mode = payload[0];
+            var mode = (VideoMode) payload[0];
             var lines = payload[1];
             
-            PruManager.S
+            PruManager.SetVideoMode(mode, lines);
+            
+            _sendEmptyResponse();
         }
-        private void GetVideoModeLines(ReadOnlySpan<byte> receivedData) {}
-        private void GetVideoModeFrequency(ReadOnlySpan<byte> receivedData) {}
-        private void GetWidth(ReadOnlySpan<byte> receivedData) {}
-        private void GetHeight(ReadOnlySpan<byte> receivedData) {}
-        private void EnumVideoModes(ReadOnlySpan<byte> receivedData) {}
-        private void GetVideoModeCount(ReadOnlySpan<byte> receivedData) {}
-        private void GetLineMod(ReadOnlySpan<byte> receivedData) {}
-        private void SetLineMod(ReadOnlySpan<byte> receivedData) {}
-        private void SetVirtualSync(ReadOnlySpan<byte> receivedData) {}
-        private void UpdateStart(ReadOnlySpan<byte> receivedData) {}
-        private void UpdatePacket(ReadOnlySpan<byte> receivedData) {}
-        private void UpdateEnd(ReadOnlySpan<byte> receivedData) {}
+
+        private void GetVideoModeLines(ReadOnlySpan<ushort> payload)
+        {
+            var modeVal = payload[0];
+
+            //check video mode
+            if (modeVal >= (ushort) VideoMode.ModeCount)
+            {
+                _sendStandardResponse((int) ServerError.ArvidErrorIllegalVideoMode);
+                return;
+            }
+
+            //search through frame rate table
+            var table = VideoModeHelpers.LineRates[modeVal];
+
+            var freq = payload[1] / 1000.0f;
+
+            //limit rates to sane values
+            if (freq < table[0].Rate)
+            {
+                _sendStandardResponse(table[0].Lines);
+                return;
+            }
+
+            if (freq > table[^1].Rate)
+            {
+                _sendStandardResponse(table[^1].Lines);
+                return;
+            }
+
+            var lineRateIndex = Array.BinarySearch(
+                table, 
+                new VideoModeHelpers.LineRate(0, freq), 
+                VideoModeHelpers.FrequencyComparer
+            );
+
+            if (lineRateIndex < 0)
+                lineRateIndex = ~lineRateIndex;
+            
+            _sendStandardResponse(table[lineRateIndex].Lines);
+        }
+
+        private void GetVideoModeFrequency(ReadOnlySpan<ushort> payload)
+        {
+            var modeVal = payload[0];
+
+            //check video mode
+            if (modeVal >= (ushort) VideoMode.ModeCount)
+            {
+                _sendStandardResponse((int) ServerError.ArvidErrorIllegalVideoMode);
+                return;
+            }
+            
+            //search through frame rate table
+            var table = VideoModeHelpers.LineRates[modeVal];
+            
+            var lines = payload[1];
+
+            //limit lines to sane values
+            if (lines > table[0].Lines)
+            {
+                _sendStandardResponse(table[0].Rate);
+                return;
+            }
+
+            if (lines < table[^1].Lines)
+            {
+                _sendStandardResponse(table[^1].Rate);
+                return;
+            }
+
+            var lineRateIndex = Array.BinarySearch(
+                table, 
+                new VideoModeHelpers.LineRate(lines, 0), 
+                VideoModeHelpers.LinesComparer   
+            );
+
+            if (lineRateIndex < 0)
+                lineRateIndex = ~lineRateIndex;
+            
+            _sendStandardResponse(table[lineRateIndex].Rate);
+        }
+
+        private void GetWidth()
+        {
+            _sendStandardResponse(PruManager.Width);
+        }
+
+        private void GetHeight()
+        {
+            _sendStandardResponse(PruManager.Height);
+        }
+
+        private unsafe void EnumVideoModes()
+        {
+            var response = new VideoListResponse {responseData = VideoModeHelpers.VideoModeInfoTable.Length};
+
+            fixed (VideoModeInfo* videoModesPtr = VideoModeHelpers.VideoModeInfoTable)
+            {
+                Buffer.MemoryCopy(
+                    videoModesPtr,
+                    response.videoModePayload,
+                    sizeof(VideoModeInfo) * VideoModeHelpers.VideoModeInfoTable.Length,
+                    sizeof(VideoModeInfo) * VideoModeHelpers.VideoModeInfoTable.Length
+                );
+            }
+            
+            Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(StandardResponse)));
+        }
+
+        private void GetVideoModeCount()
+        {
+            _sendStandardResponse(VideoModeHelpers.VideoModeInfoTable.Length);
+        }
+
+        private void GetLineMod()
+        {
+            _sendStandardResponse(PruManager.LinePosMod);
+        }
+
+        private void SetLineMod(ReadOnlySpan<ushort> receivedData)
+        {
+            PruManager.SetLinePosMod(receivedData[0]);
+            _sendEmptyResponse();
+        }
+
+        private void SetVirtualSync(ReadOnlySpan<ushort> receivedData)
+        {
+            PruManager.SetVsyncLine(receivedData[0]);
+            _sendEmptyResponse();
+        }
+        private void UpdateStart(ReadOnlySpan<ushort> receivedData) {}
+        private void UpdatePacket(ReadOnlySpan<ushort> receivedData) {}
+        private void UpdateEnd(ReadOnlySpan<ushort> receivedData) {}
     }
 }

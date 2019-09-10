@@ -14,10 +14,7 @@ namespace Arvid.Server
             Initializing = 2,
             Initialized = 3
         }
-        
-        private readonly IPEndPoint _controlEndPoint;
-        private readonly IPEndPoint _dataEndPoint;
-        
+
         private readonly Socket _controlListener;
         private readonly Socket _dataListener;
 
@@ -32,14 +29,14 @@ namespace Arvid.Server
         {
             var ip = IPAddress.Any;
             
-            _controlEndPoint = new IPEndPoint(ip, 32100);
-            _dataEndPoint = new IPEndPoint(ip, 32101);
+            var controlEndPoint = new IPEndPoint(ip, 32100);
+            var dataEndPoint = new IPEndPoint(ip, 32101);
             
             _controlListener = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             _dataListener = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             
-            _controlListener.Bind(_controlEndPoint);
-            _dataListener.Bind(_dataEndPoint);
+            _controlListener.Bind(controlEndPoint);
+            _dataListener.Bind(dataEndPoint);
             
             _controlListener.Listen(1);
             _dataListener.Listen(1);

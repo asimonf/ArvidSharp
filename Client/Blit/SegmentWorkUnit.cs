@@ -1,5 +1,3 @@
-using System;
-
 namespace Arvid.Client.Blit
 {
     internal struct SegmentWorkUnit

@@ -1,9 +1,29 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Arvid.Server
 {
-    internal static class RateTable
+    internal static class VideoModeHelpers
     {
+        public class LineRateFrequencyComparer : IComparer<LineRate>
+        {
+            public int Compare(LineRate x, LineRate y)
+            {
+                return x.Rate.CompareTo(y.Rate);
+            }
+        }
+        
+        public class LineRateLinesComparer : IComparer<LineRate>
+        {
+            public int Compare(LineRate x, LineRate y)
+            {
+                return -x.Lines.CompareTo(y.Lines);
+            }
+        }
+
+        public static LineRateFrequencyComparer FrequencyComparer = new LineRateFrequencyComparer();
+        public static LineRateLinesComparer LinesComparer = new LineRateLinesComparer();
+        
         [StructLayout(LayoutKind.Sequential)]
         public readonly struct LineRate
         {
@@ -61,6 +81,41 @@ namespace Arvid.Server
                 );
             }
         }
+
+        // must be sorted according to screen width in descending order
+        public static VideoModeInfo[] VideoModeInfoTable =
+        {
+            new VideoModeInfo(640, VideoMode.Mode640), 
+            new VideoModeInfo(512, VideoMode.Mode512), 
+            new VideoModeInfo(448, VideoMode.Mode448), 
+            new VideoModeInfo(416, VideoMode.Mode416), 
+            new VideoModeInfo(400, VideoMode.Mode400), 
+            new VideoModeInfo(392, VideoMode.Mode392), 
+            new VideoModeInfo(384, VideoMode.Mode384), 
+            new VideoModeInfo(336, VideoMode.Mode336), 
+            new VideoModeInfo(320, VideoMode.Mode320), 
+            new VideoModeInfo(292, VideoMode.Mode292), 
+            new VideoModeInfo(288, VideoMode.Mode288), 
+            new VideoModeInfo(256, VideoMode.Mode256), 
+        };
+
+        // Chronological order 
+        public static int[] ModeWidthTable =
+        {
+            320,
+            256,
+            288,
+            384,
+            240,
+            392,
+            400,
+            292,
+            336,
+            416,
+            448,
+            512,
+            640,
+        };
 
         public static LineRate[][] LineRates = {
             new[]

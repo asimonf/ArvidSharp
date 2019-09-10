@@ -1,7 +1,15 @@
 namespace Arvid.Server
 {
-    public class FrameStreamer
+    public static class FrameStreamer
     {
-        
+        public static void PauseAtNextFrame()
+        {
+            
+        }
+
+        public static void Resume()
+        {
+            
+        }
     }
 }
