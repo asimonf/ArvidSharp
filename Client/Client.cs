@@ -126,20 +126,26 @@ namespace Arvid.Client
         
         private unsafe void BlitterOnSegmentReady(SegmentWorkOutput output)
         {
+            if (output.CompressedSize > Helper.MaxSegmentSize << 1)
+            {
+                Console.WriteLine("Compressed line is larger than the maximum segment size");
+                return;
+            }
+            
             // the extra is for an id
-            var payloadSize = (sizeof(CommandEnum) >> 1) + 3 + output.CompressedSize;
+            var payloadSize = 8 + output.CompressedSize;
             var payload = _arrayPool.Rent(payloadSize);
 
-            payload[0] = (ushort) CommandEnum.Blit;
-            payload[1] = output.CompressedSize;
-            payload[2] = output.YPos;
-            payload[3] = output.Stride;
+            payload[0] = output.CompressedSize;
+            payload[1] = output.YPos;
+            payload[2] = output.Stride;
+            payload[3] = output.OriginalSize;
             
             Array.Copy(
                 output.Output, 
                 0, 
                 payload, 
-                4, 
+                8, 
                 output.CompressedSize
             );
 

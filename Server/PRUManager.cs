@@ -57,7 +57,7 @@ namespace Arvid.Server
 
         public static int VsyncLine { get; private set; }
 
-        private static readonly unsafe ushort*[] FrameBuffers = new ushort*[2];
+        public static readonly unsafe ushort*[] FrameBuffers = new ushort*[2];
 
         public static bool Initialized { get; private set; }
 

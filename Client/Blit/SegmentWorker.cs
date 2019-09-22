@@ -1,18 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Zstandard;
+using static Zstandard.ExternMethods;
 
 namespace Arvid.Client.Blit
 {
-    internal class SegmentWorker: IDisposable
+    internal class SegmentWorker : IDisposable
     {
-        // Max segment size is 48KiB or 24KiW
-        private const int MaxSegmentSize = 24576;
         // Not Owned
         private readonly ManualResetEvent _startWorkEvent;
         private readonly ManualResetEvent _finishWorkEvent;
-        
+
         // Owned
         private readonly Thread _thread;
         private readonly IntPtr _zstdContext;
@@ -22,36 +20,37 @@ namespace Arvid.Client.Blit
         // Actual State
         public readonly Queue<SegmentWorkUnit> WorkQueue;
         public readonly Queue<SegmentWorkOutput> OutputQueue;
-        
+
         public SegmentWorker(
             ManualResetEvent startWorkEvent,
             ManualResetEvent finishWorkEvent
-        ) {
+        )
+        {
             _thread = new Thread(_doWork);
             _startWorkEvent = startWorkEvent;
             _finishWorkEvent = finishWorkEvent;
             WorkQueue = new Queue<SegmentWorkUnit>(10);
             OutputQueue = new Queue<SegmentWorkOutput>(10);
-            _zstdContext = ExternMethods.ZSTD_createCCtx();
+            _zstdContext = ZSTD_createCCtx();
         }
 
         public void Dispose()
         {
             Stop();
-            if (IntPtr.Zero != _zstdContext) ExternMethods.ZSTD_freeCCtx(_zstdContext);
+            if (IntPtr.Zero != _zstdContext) ZSTD_freeCCtx(_zstdContext);
         }
 
         public void AddWork(ushort[] data, int yPos, int lineCount, int stride)
         {
             var segmentSize = lineCount;
-            if (lineCount * stride > MaxSegmentSize) segmentSize >>= 1;
+            if (lineCount * stride > Helper.MaxSegmentSize) segmentSize >>= 1;
 
             for (var i = 0; i < lineCount; i += segmentSize)
             {
-                var segmentYPos = (ushort)(i + yPos);
+                var segmentYPos = (ushort) (i + yPos);
                 var offset = segmentYPos * stride;
                 var length = segmentSize * stride;
-                WorkQueue.Enqueue(_unitPool.Request(data, offset, length, segmentYPos, (ushort)stride));
+                WorkQueue.Enqueue(_unitPool.Request(data, offset, length, segmentYPos, (ushort) stride));
             }
         }
 
@@ -70,21 +69,20 @@ namespace Arvid.Client.Blit
                         {
                             var workUnit = WorkQueue.Dequeue();
 
-                            var inputSize = workUnit.Length;
-                            var outputSize = (int) ExternMethods.ZSTD_compressBound(new UIntPtr((uint) inputSize))
-                                .ToUInt32();
-                            var outputUnit = _outputPool.Request(outputSize, workUnit.YPos, workUnit.Stride);
+                            var inputSize = (ushort) (workUnit.Length << 1); // In bytes
+                            var outputSize = (int) ZSTD_compressBound(new UIntPtr(inputSize)).ToUInt32(); // In bytes
+                            var outputUnit = _outputPool.Request(outputSize, workUnit.YPos, workUnit.Stride, inputSize);
                             var outputBuffer = outputUnit.Output;
 
                             fixed (ushort* inputPtr = &workUnit.Data[workUnit.Offset])
                             fixed (ushort* outputPtr = outputBuffer)
                             {
-                                outputUnit.CompressedSize = (ushort) ExternMethods.ZSTD_compressCCtx(
+                                outputUnit.CompressedSize = (ushort) ZSTD_compressCCtx(
                                     _zstdContext,
                                     new IntPtr(outputPtr),
                                     new UIntPtr((uint) outputSize),
                                     new IntPtr(inputPtr),
-                                    new UIntPtr((uint) inputSize),
+                                    new UIntPtr(inputSize),
                                     1
                                 ).ToUInt32();
                             }
@@ -109,7 +107,7 @@ namespace Arvid.Client.Blit
         public void Stop()
         {
             if (!_thread.IsAlive) return;
-            
+
             _thread.Interrupt();
             _thread.Join();
         }

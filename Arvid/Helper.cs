@@ -5,6 +5,9 @@ namespace Arvid
 {
     public static class Helper
     {
+        // Max segment size is 48KiB or 24KiW
+        public const int MaxSegmentSize = 24576;
+        
         public static void ClearSpan<T>(Span<T> buffer)
         {
             for (var i = 0; i < buffer.Length; i++)

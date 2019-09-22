@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Arvid\Arvid.csproj" />
       <ProjectReference Include="..\NetPRUSSDriver\NetPRUSSDriver.csproj" />
+      <ProjectReference Include="..\Zstandard\Zstandard.csproj" />
     </ItemGroup>
 
     <ItemGroup>

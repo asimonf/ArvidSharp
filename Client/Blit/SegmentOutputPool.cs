@@ -18,7 +18,7 @@ namespace Arvid.Client.Blit
             _pool = new ConcurrentQueue<SegmentWorkOutput>();
         }
 
-        public SegmentWorkOutput Request(int bufferSize, ushort yPos, ushort stride)
+        public SegmentWorkOutput Request(int bufferSize, ushort yPos, ushort stride, ushort originalSize)
         {
             var res = _pool.TryDequeue(out var obj);
             
@@ -28,6 +28,7 @@ namespace Arvid.Client.Blit
             obj.Output = _arrayPool.Rent(bufferSize);
             obj.YPos = yPos;
             obj.Stride = stride;
+            obj.OriginalSize = originalSize;
 
             return obj;
         }
@@ -38,6 +39,7 @@ namespace Arvid.Client.Blit
             obj.Output = null;
             obj.YPos = 0;
             obj.Stride = 0;
+            obj.OriginalSize = 0;
             _pool.Enqueue(obj);
         }
     }
