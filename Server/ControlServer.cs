@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Sockets;
 using Arvid.Response;
 
@@ -14,13 +12,13 @@ namespace Arvid.Server
 
         private delegate void Command(ReadOnlySpan<ushort> payload);
         
-        private readonly ConcurrentQueue<ListenerMessage> _listenerMessages;
+        private readonly Listener _listener;
         private readonly Dictionary<CommandEnum, Command> _commandMap;
         private readonly Dictionary<CommandEnum, Action> _actionMap;
 
-        public ControlServer(Socket socket, ConcurrentQueue<ListenerMessage> listenerMessages) : base(socket)
+        public ControlServer(Socket socket, Listener listener) : base(socket)
         {
-            _listenerMessages = listenerMessages;
+            _listener = listener;
             _commandMap = new Dictionary<CommandEnum, Command>();
             _actionMap = new Dictionary<CommandEnum, Action>();
 
@@ -105,7 +103,7 @@ namespace Arvid.Server
         {
             if (!_initialized)
             {
-                _listenerMessages.Enqueue(ListenerMessage.Init);
+                _listener.EnqueueMessage(ListenerMessage.Init);
                 _initialized = true;
             }
             
@@ -115,13 +113,13 @@ namespace Arvid.Server
         private void Close()
         {
             _sendEmptyResponse();
-            _listenerMessages.Enqueue(ListenerMessage.Stop);
+            _listener.EnqueueMessage(ListenerMessage.Stop);
         }
 
         private void PowerOff()
         {
             _sendEmptyResponse();
-            _listenerMessages.Enqueue(ListenerMessage.ShutDown);
+            _listener.EnqueueMessage(ListenerMessage.ShutDown);
         }
 
         private void GetFrameNumber()

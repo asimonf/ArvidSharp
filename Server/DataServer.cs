@@ -8,11 +8,8 @@ namespace Arvid.Server
 {
     internal class DataServer: BaseServer
     {
-        private readonly ConcurrentQueue<ListenerMessage> _listenerMessages;
-
-        public DataServer(Socket socket, ConcurrentQueue<ListenerMessage> listenerMessages) : base(socket)
+        public DataServer(Socket socket) : base(socket)
         {
-            _listenerMessages = listenerMessages;
         }
 
         protected override unsafe void DoWork()

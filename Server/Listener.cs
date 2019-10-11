@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Arvid.Server
 {
@@ -18,6 +19,7 @@ namespace Arvid.Server
         private readonly Socket _controlListener;
         private readonly Socket _dataListener;
 
+        private readonly AutoResetEvent _listenerResetEvent;
         private readonly ConcurrentQueue<ListenerMessage> _listenerMessages;
         
         private DataServer _dataServer;
@@ -41,6 +43,7 @@ namespace Arvid.Server
             _controlListener.Listen(1);
             _dataListener.Listen(1);
             
+            _listenerResetEvent = new AutoResetEvent(false);
             _listenerMessages = new ConcurrentQueue<ListenerMessage>();
         }
 
@@ -58,7 +61,7 @@ namespace Arvid.Server
 
             var handler = listener.EndAccept(ar);
             
-            _controlServer = new ControlServer(handler, _listenerMessages);
+            _controlServer = new ControlServer(handler, this);
             _controlServer.Start();
             
             State = State == StateEnum.WaitingForConnections ? StateEnum.Initializing : StateEnum.Initialized;
@@ -88,8 +91,15 @@ namespace Arvid.Server
             State = StateEnum.WaitingForConnections;
         }
 
+        public void EnqueueMessage(ListenerMessage message)
+        {
+            _listenerMessages.Enqueue(message);
+            _listenerResetEvent.Set();
+        }
+
         public void DoMessageLoop()
         {
+            _listenerResetEvent.WaitOne(-1);
             while (_listenerMessages.TryDequeue(out var result))
             {
                 switch (result)
