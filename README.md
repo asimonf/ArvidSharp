@@ -9,3 +9,10 @@ could help with both reliability and performance.
 I'm also looking for ways to remove double-buffering and add proper vsync timing monitoring to implement a real virtual vsync.
 
 This is a WIP and is not in any way usable right now. 
+
+This is provided as is without warranty and, as such, you should use this at your discretion. 
+
+I must also add licencing notices, but just in case, I don't claim ownership of anything done by either TI or Marek 
+(original creator of libarvid and arvid-client). The pasm executable was built by me and is included for ease of use.
+
+This project is derived from Marek's work and it wouldn't be possible without his help. 
