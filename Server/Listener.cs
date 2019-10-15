@@ -17,7 +17,7 @@ namespace Arvid.Server
         }
 
         private readonly Socket _controlListener;
-        private readonly Socket _dataListener;
+        private readonly Socket _dataConnection;
 
         private readonly AutoResetEvent _listenerResetEvent;
         private readonly ConcurrentQueue<ListenerMessage> _listenerMessages;
@@ -35,13 +35,12 @@ namespace Arvid.Server
             var dataEndPoint = new IPEndPoint(ip, 32101);
             
             _controlListener = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            _dataListener = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
+            _dataConnection = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             
             _controlListener.Bind(controlEndPoint);
-            _dataListener.Bind(dataEndPoint);
+            _dataConnection.Bind(dataEndPoint);
             
-            _controlListener.Listen(1);
-            _dataListener.Listen(1);
+            _controlListener.Listen(100);
             
             _listenerResetEvent = new AutoResetEvent(false);
             _listenerMessages = new ConcurrentQueue<ListenerMessage>();
@@ -53,6 +52,7 @@ namespace Arvid.Server
             _controlServer = null;
             _dataServer?.Stop();
             _dataServer = null;
+            GC.Collect();
         }
 
         private void _acceptControlConnection(IAsyncResult ar)
@@ -62,18 +62,10 @@ namespace Arvid.Server
             var handler = listener.EndAccept(ar);
             
             _controlServer = new ControlServer(handler, this);
+            _controlServer.Setup();
             _controlServer.Start();
-            
-            State = State == StateEnum.WaitingForConnections ? StateEnum.Initializing : StateEnum.Initialized;
-        }
 
-        private void _acceptDataConnection(IAsyncResult ar)
-        {
-            var listener = (Socket) ar.AsyncState;
-
-            var handler = listener.EndAccept(ar);
-            
-            _dataServer = new DataServer(handler);
+            _dataServer = new DataServer(_dataConnection);
             _dataServer.Start();
             
             State = State == StateEnum.WaitingForConnections ? StateEnum.Initializing : StateEnum.Initialized;
@@ -86,7 +78,6 @@ namespace Arvid.Server
             _resetServers();
 
             _controlListener.BeginAccept(_acceptControlConnection, _controlListener);
-            _dataListener.BeginAccept(_acceptDataConnection, _dataListener);
             
             State = StateEnum.WaitingForConnections;
         }
@@ -121,8 +112,8 @@ namespace Arvid.Server
         
         public void Disconnect()
         {
-            _resetServers();
             State = StateEnum.None;
+            Listen();
         }
     }
 }

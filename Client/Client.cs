@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using Arvid.Client.Blit;
 using Arvid.Response;
+using System.Threading;
 
 namespace Arvid.Client
 {
@@ -94,15 +95,15 @@ namespace Arvid.Client
                 _blitter.Start();
                 _blitter.SegmentReady += BlitterOnSegmentReady;
             }
-            catch
+            catch (Exception e)
             {
                 if (_control.Connected) _control.Disconnect(true);
-                return false;
+                throw e;
             }
 
+            Connected = true;
             var id = _createAndSendControlPayload(CommandEnum.Init);
             var result = _getRegularResponse(id);
-
             return Connected = result >= 0;
         }
 

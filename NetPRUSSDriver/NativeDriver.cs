@@ -188,8 +188,10 @@ namespace NetPRUSSDriver
             public static tpruss_intc_initdata PRUSS_INTC_INITDATA()
             {
                 var ret = new tpruss_intc_initdata();
-                
-                ret.sysevts_enabled = new sbyte[]
+
+                ret.Init();
+
+                Array.Copy(new sbyte[]
                 {
                     PRU0_PRU1_INTERRUPT, 
                     PRU1_PRU0_INTERRUPT, 
@@ -198,9 +200,9 @@ namespace NetPRUSSDriver
                     ARM_PRU0_INTERRUPT, 
                     ARM_PRU1_INTERRUPT, 
                     -1
-                };
+                }, 0, ret.sysevts_enabled, 0, 7);
 
-                ret.sysevt_to_channel_map = new[]
+                Array.Copy(new[]
                 {
                     new tsysevt_to_channel_map(PRU0_PRU1_INTERRUPT,CHANNEL1), 
                     new tsysevt_to_channel_map(PRU1_PRU0_INTERRUPT, CHANNEL0), 
@@ -209,16 +211,16 @@ namespace NetPRUSSDriver
                     new tsysevt_to_channel_map(ARM_PRU0_INTERRUPT, CHANNEL0), 
                     new tsysevt_to_channel_map(ARM_PRU1_INTERRUPT, CHANNEL1),  
                     new tsysevt_to_channel_map(-1,-1)
-                };
+                }, 0, ret.sysevt_to_channel_map, 0, 7);
 
-                ret.channel_to_host_map = new[]
+                Array.Copy(new[]
                 {
                     new tchannel_to_host_map(CHANNEL0,PRU0), 
                     new tchannel_to_host_map(CHANNEL1, PRU1), 
                     new tchannel_to_host_map(CHANNEL2, PRU_EVTOUT0), 
                     new tchannel_to_host_map(CHANNEL3, PRU_EVTOUT1), 
                     new tchannel_to_host_map(-1,-1)
-                };
+                }, 0, ret.channel_to_host_map, 0, 5);
 
                 /*Enable PRU0, PRU1, PRU_EVTOUT0 */
                 ret.host_enable_bitmask = (PRU0_HOSTEN_MASK | PRU1_HOSTEN_MASK | PRU_EVTOUT0_HOSTEN_MASK |

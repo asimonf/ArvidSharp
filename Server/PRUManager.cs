@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading;
 using Mono.Unix.Native;
 using NetPRUSSDriver;
+using System.Text.Encodings;
 
 namespace Arvid.Server
 {
@@ -82,8 +83,9 @@ namespace Arvid.Server
 
             if (size > 5)
             {
-                _ddrAddress = uint.Parse(new ReadOnlySpan<char>(buffer, (int) size), NumberStyles.HexNumber);
-                Console.WriteLine($"arvid: found ddr address at: 0x{_ddrAddress:X}");
+                var str = System.Text.Encoding.ASCII.GetString(new ReadOnlySpan<byte>(buffer, (int)size)).Trim();
+                _ddrAddress = Convert.ToUInt32(str, 16);
+                Console.WriteLine($"arvid: found ddr address at: 0x{_ddrAddress:X} with size {size}");
             }
 
             return 0;
@@ -91,19 +93,6 @@ namespace Arvid.Server
 
         private static void _initUio()
         {
-            Helper.RunCommand(
-                "/sbin/modprobe -rw uio_pruss",
-                "Couldn't remove uio_pruss"
-            );
-
-            Helper.RunCommand(
-                $"/sbin/modprobe uio_pruss extram_pool_sz=0x{MemSize:X}",
-                "Couldn't insert uio_pruss"
-            );
-
-            // Wait for the module to be loaded
-            Thread.Sleep(100);
-
             //try to find uio address
             _ddrAddress = 0;
             for (var i = 0; i < 8; i++)

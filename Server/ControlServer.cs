@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Sockets;
 using Arvid.Response;
+using System.Threading;
 
 namespace Arvid.Server
 {
@@ -21,13 +22,16 @@ namespace Arvid.Server
             _listener = listener;
             _commandMap = new Dictionary<CommandEnum, Command>();
             _actionMap = new Dictionary<CommandEnum, Action>();
+        }
 
+        public void Setup()
+        {
             var commandEnumValues = Enum.GetValues(typeof(CommandEnum));
 
             foreach (var commandValue in commandEnumValues)
             {
-                var commandEnum = (CommandEnum) commandValue;
-                
+                var commandEnum = (CommandEnum)commandValue;
+
                 // Ignore these for the map
                 switch (commandEnum)
                 {
@@ -37,12 +41,12 @@ namespace Arvid.Server
                 }
 
                 // Create delegate and add to the delegateMap
-                var method = GetType().GetMethod(commandValue.ToString());
+                var method = GetType().GetMethod(commandValue.ToString(), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
                 if (method.GetParameters().Length == 0)
-                    _actionMap.Add(commandEnum, Delegate.CreateDelegate(typeof(Action), method) as Action);
+                    _actionMap.Add(commandEnum, Delegate.CreateDelegate(typeof(Action), this, method.Name) as Action);
                 else if (method.GetParameters().Length == 1)
-                    _commandMap.Add(commandEnum, Delegate.CreateDelegate(typeof(Command), method) as Command);
+                    _commandMap.Add(commandEnum, Delegate.CreateDelegate(typeof(Command), this, method.Name) as Command);
                 else
                     throw new Exception("Invalid method definition");
             }
@@ -54,28 +58,43 @@ namespace Arvid.Server
             var receiveBuffer = stackalloc ushort[bufferSize];
             var receiveSpan = new Span<byte>(receiveBuffer, bufferSize * 2);
 
-            while (true)
+            try
             {
-                var receivedWords = Socket.Receive(receiveSpan) / 2;
-
-                Debug.Assert(receivedWords >= 2);
-
-                var command = (CommandEnum) receiveBuffer[0];
-
-                if (command == CommandEnum.Init)
+                while (true)
                 {
-                    Init();
-                    continue;
+                    var receivedWords = Socket.Receive(receiveSpan) / 2;
+
+                    if (receivedWords == 0)
+                    {
+                        Console.WriteLine("Empty answer received. Shutting down!");
+                        _listener.EnqueueMessage(ListenerMessage.Stop);
+                        return;
+                    }
+
+                    Debug.Assert(receivedWords >= 2);
+
+                    var command = (CommandEnum)receiveBuffer[0];
+
+                    if (command == CommandEnum.Init)
+                    {
+                        Init();
+                        continue;
+                    }
+
+                    if (!_initialized) continue;
+
+                    var hasPayload = receivedWords > 2;
+
+                    if (hasPayload)
+                        _commandMap[command](new ReadOnlySpan<ushort>(receiveBuffer + 2, receivedWords - 2));
+                    else
+                        _actionMap[command]();
                 }
-
-                if (!_initialized) continue;
-
-                var hasPayload = receivedWords > 2;
-
-                if (hasPayload)
-                    _commandMap[command](new ReadOnlySpan<ushort>(receiveBuffer + 2, receivedWords - 2));
-                else
-                    _actionMap[command]();
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+                _listener.EnqueueMessage(ListenerMessage.Stop);
+                return;
             }
         }
         

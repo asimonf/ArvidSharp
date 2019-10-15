@@ -13,19 +13,32 @@ namespace Arvid
             for (var i = 0; i < buffer.Length; i++)
                 buffer[i] = default;
         }
-        
-        public static void RunCommand(string command, string errorMessage)
+
+        public static string Bash(this string cmd, string errorMessage)
         {
-            var process = Process.Start(command);
-            if (null == process)
+            var escapedArgs = cmd.Replace("\"", "\\\"");
+
+            var process = new Process()
             {
-                throw new Exception(errorMessage);
-            }
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            string result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
+
             if (process.ExitCode < 0)
             {
                 throw new Exception(errorMessage);
             }
+
+            return result;
         }
     }
 }

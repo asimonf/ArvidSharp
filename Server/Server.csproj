@@ -5,6 +5,11 @@
         <RootNamespace>Arvid.Server</RootNamespace>
         <OutputType>Exe</OutputType>
         <LangVersion>8</LangVersion>
+        <PublishTrimmed>true</PublishTrimmed>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishSingleFile>true</PublishSingleFile>
+        <CrossGenDuringPublish>false</CrossGenDuringPublish>
+        <RuntimeIdentifier>linux-arm</RuntimeIdentifier>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
