@@ -1,0 +1,168 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "ti,beaglebone", "ti,beaglebone-black", "ti,beaglebone-green";
+	part-number = "pru_arvid";
+	version = "00A0";
+
+	/* Define pins and resources this config sets up. */
+	/* pin numbers on header P8 or P9 */
+
+	exclusive-use = 
+	"P8.45", /* GPIO2_6 */
+	"P8.46", /* GPIO2_7 */
+	"P8.43", /* GPIO2_8 */
+	"P8.44", /* GPIO2_9 */
+	"P8.41", /* GPIO2_10 */
+
+	"P8.42", /* GPIO2_11 */
+	"P8.39", /* GPIO2_12 */
+	"p8.40", /* GPIO2_13 */
+	"p8.37", /* GPIO2_14 */
+	"p8.38", /* GPIO2_15 */
+
+	"p8.18", /* GPIO2_1 */
+	"p8.9",  /* GPIO2_5 */
+	"p8.10", /* GPIO2_4 */
+	"p8.7",  /* GPIO2_2 */
+	"p8.8",  /* GPIO2_3 */
+
+	"p8.28", /* GPIO2_24 - sync */
+
+	"p9.27", /* GPIO3_19 TATE switch */
+	"p9.28", /* GPIO3_17 Coin button */
+	"p9.25", /* GPIO3_21 Start button */
+
+	"pru1" ; /* PRU unit 1 */
+
+        
+	/*
+	 * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
+	 */
+	fragment@0 {
+		target-path="/";
+		__overlay__ {
+
+			chosen {
+				overlays {
+					pru_arvid-00A0 = __TIMESTAMP__;
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&am33xx_pinmux>;
+
+		__overlay__ {
+			status = "okay";
+
+			arvid_pru_pins: pinmux_arvid_pru_pins {
+				/* PRU Low latency IO */
+				pinctrl-single,pins = <
+					0x0A0 0x07  /* P8.45 mode 7 -> output */
+					0x0A4 0x07  /* P8.46 mode 7 -> output */
+					0x0A8 0x07  /* P8.43 mode 7 -> output */
+					0x0AC 0x07  /* P8.44 mode 7 -> output */
+					0x0B0 0x07  /* P8.41 mode 7 -> output */
+
+					0x0B4 0x07  /* P8.42 mode 7 -> output */
+					0x0B8 0x07  /* P8.39 mode 7 -> output */
+					0x0BC 0x07  /* P8.40 mode 7 -> output */
+					0x0C0 0x07  /* P8.37 mode 7 -> output */
+					0x0C4 0x07  /* P8.38 mode 7 -> output */
+
+					0x08C 0x07  /* P8.18 mode 7 -> output */
+					0x09C 0x07  /* P8.9  mode 7 -> output */
+					0x098 0x07  /* P8.10 mode 7 -> output */
+					0x090 0x07  /* P8.7  mode 7 -> output */
+					0x094 0x07  /* P8.8  mode 7 -> output */
+
+					0x0E8 0x07  /* P8.28 mode 7 -> output */
+
+					0x1A4 0x37  /* P9.27 mode 37 -> input, pullup */
+					0x19C 0x37  /* P9.28 mode 37 -> input, pullup */
+					0x1AC 0x37  /* P9.25 mode 37 -> input, pullup */
+				>;
+			};
+
+		};
+	};
+
+	/*
+	 * Free up the pins used by the cape from the pinmux helpers.
+	 */
+	fragment@2 {
+		target = <&ocp>;
+		__overlay__ {
+			P8_45_pinmux { status = "disabled"; };	/* lcd_data0 */
+			P8_46_pinmux { status = "disabled"; };	/* lcd_data1 */
+			P8_43_pinmux { status = "disabled"; };	/* lcd_data2 */
+			P8_44_pinmux { status = "disabled"; };	/* lcd_data3 */
+			P8_41_pinmux { status = "disabled"; };	/* lcd_data4 */
+			P8_42_pinmux { status = "disabled"; };	/* lcd_data5 */
+			P8_39_pinmux { status = "disabled"; };	/* lcd_data6 */
+			P8_40_pinmux { status = "disabled"; };	/* lcd_data7 */
+			P8_37_pinmux { status = "disabled"; };	/* lcd_data8 */
+			P8_38_pinmux { status = "disabled"; };	/* lcd_data9 */
+			P8_36_pinmux { status = "disabled"; };	/* lcd_data10 */
+			P8_34_pinmux { status = "disabled"; };	/* lcd_data11 */
+			P8_35_pinmux { status = "disabled"; };	/* lcd_data12 */
+			P8_33_pinmux { status = "disabled"; };	/* lcd_data13 */
+			P8_31_pinmux { status = "disabled"; };	/* lcd_data14 */
+			P8_32_pinmux { status = "disabled"; };	/* lcd_data15 */
+			P8_27_pinmux { status = "disabled"; };	/* lcd_vsync */
+			P8_29_pinmux { status = "disabled"; };	/* lcd_hsync */
+			P8_28_pinmux { status = "disabled"; };	/* lcd_pclk */
+			P8_30_pinmux { status = "disabled"; };	/* lcd_ac_bias_en */
+			P8_18_pinmux { status = "disabled"; };	/* dunno what */
+			P8_10_pinmux { status = "disabled"; };	/* dunno what */
+			P8_09_pinmux { status = "disabled"; };	/* dunno what */
+			P8_08_pinmux { status = "disabled"; };	/* dunno what */
+			P8_07_pinmux { status = "disabled"; };	/* dunno what */
+
+			P9_27_pinmux { status = "disabled"; };	/* dunno what */
+			P9_28_pinmux { status = "disabled"; };	/* dunno what */
+			P9_25_pinmux { status = "disabled"; };	/* dunno what */
+		};
+	};	
+        
+	fragment@4 {
+		target = <&pruss>;
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&arvid_pru_pins>;
+			enabled = <1>;
+
+			hv_sync {
+				pin-names = "Arvid:hv_sync";
+				gpios = <&gpio2 24 0>;
+			};
+
+			buttons {
+				pin-names = "Arvid:tate_switch", "Arvid:coin_button", "Arvid:start_button";
+				gpios = <&gpio3 27 0    &gpio3 28 0     &gpio3 25 0>;
+			};
+
+			red_bits {
+				pin-names = "Arvid:red_0", "Arvid:red_1", "Arvid:red_2", "Arvid:red_3", "Arvid:red_4";
+				gpios     = <&gpio2 11 0    &gpio2 12 0    &gpio2 13 0   &gpio2 14 0   &gpio2 15 0>;
+			};
+
+			green_bits {
+				pin-names = "Arvid:green_0", "Arvid:green_1", "Arvid:green_2", "Arvid:green_3", "Arvid:green_4";
+				gpios     = <&gpio2 6 0       &gpio2 7 0       &gpio2 8 0       &gpio2 9 0       &gpio2 10 0>;
+			};
+
+			blue_bits {
+				pin-names = "Arvid:blue_0", "Arvid:blue_1", "Arvid:blue_2", "Arvid:blue_3", "Arvid:blue_4";
+				gpios     = <&gpio2 1 0      &gpio2 2 0      &gpio2 3 0      &gpio2 4 0      &gpio2 5 0>;
+			};
+
+		};
+	};
+
+};
+

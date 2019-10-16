@@ -30,6 +30,10 @@
       <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Extras" />
+    </ItemGroup>
+
     <Target Name="PASM" BeforeTargets="AfterBuild">
         <Exec Command="Utils\pasm -b PRU\prustream.p" ConsoleToMSBuild="true">
             <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />

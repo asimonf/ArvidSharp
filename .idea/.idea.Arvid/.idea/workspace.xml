@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8475b2c2-1394-4b0b-a8aa-6f03aa3fcdf3" name="Default Changelist" comment="Add pasm for ease of use">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Arvid/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Arvid.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Arvid/Arvid.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/Arvid.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Arvid/Helper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Arvid/Helper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Client.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NetPRUSSDriver/NativeDriver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NetPRUSSDriver/NativeDriver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NetPRUSSDriver/NetPRUSSDriver.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NetPRUSSDriver/NetPRUSSDriver.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/ControlServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/ControlServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Listener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Listener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/PRUManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/PRUManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Zstandard/Zstandard.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Zstandard/Zstandard.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Zstandard/lib/win/libzstd.dll" beforeDir="false" />
-    </list>
+    <list default="true" id="8475b2c2-1394-4b0b-a8aa-6f03aa3fcdf3" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,8 +22,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
+            <state relative-caret-position="450">
+              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
             </state>
           </provider>
         </entry>
@@ -80,7 +66,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/Listener.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1035">
+            <state relative-caret-position="990">
               <caret line="94" column="13" selection-start-line="94" selection-start-column="13" selection-end-line="94" selection-end-column="13" />
               <folding>
                 <marker date="1571113757805" expanded="false" signature="6:118" ph="..." />
@@ -104,7 +90,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/ControlServer.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="165">
               <caret line="18" selection-start-line="18" selection-end-line="18" />
               <folding>
                 <marker date="1571113607132" expanded="false" signature="6:145" ph="..." />
@@ -287,9 +273,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1913" />
-    <option name="width" value="1934" />
-    <option name="height" value="1047" />
+    <option name="x" value="1903" />
+    <option name="y" value="83" />
+    <option name="width" value="1404" />
+    <option name="height" value="1008" />
   </component>
   <component name="ProjectView">
     <navigator currentView="FileSystemExplorer" proportions="" version="1">
@@ -412,7 +399,7 @@
       <workItem from="1569704507299" duration="3858000" />
       <workItem from="1569812641567" duration="3298000" />
       <workItem from="1570763291985" duration="1402000" />
-      <workItem from="1571100826959" duration="1468000" />
+      <workItem from="1571100826959" duration="1986000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1565615092140</created>
@@ -477,11 +464,25 @@
       <option name="project" value="LOCAL" />
       <updated>1570764479106</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Fix a ton of bugs and add a test client">
+      <created>1571113797924</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1571113797924</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Add a bit of instructions to serve as reminder for me">
+      <created>1571114279570</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1571114279570</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116929000" />
+    <option name="totallyTimeSpent" value="117447000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -579,7 +580,9 @@
     <MESSAGE value="Improve the blitter and implement the server screen receiver" />
     <MESSAGE value="Add code for the PRU program and the ability to compile it&#10;&#10;Also made the server an actual runnable program instead of a library." />
     <MESSAGE value="Add pasm for ease of use" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add pasm for ease of use" />
+    <MESSAGE value="Fix a ton of bugs and add a test client" />
+    <MESSAGE value="Add a bit of instructions to serve as reminder for me" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add a bit of instructions to serve as reminder for me" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -848,15 +851,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
-          <folding>
-            <marker date="1569129252876" expanded="true" signature="6:39" ph="..." />
-            <marker date="1569129252876" expanded="true" signature="56:790" ph="{...}" />
-            <marker date="1569129252876" expanded="true" signature="89:788" ph="{...}" />
-            <marker date="1569129252876" expanded="true" signature="255:364" ph="{...}" />
-            <marker date="1569129252876" expanded="true" signature="448:782" ph="{...}" />
-            <marker date="1569129252876" expanded="true" signature="541:620" ph="{...}" />
-            <marker date="1569129252876" expanded="true" signature="693:772" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -871,44 +865,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="615">
           <caret line="137" selection-start-line="137" selection-end-line="137" />
-          <folding>
-            <marker date="1569129809565" expanded="false" signature="6:152" ph="..." />
-            <marker date="1569129809565" expanded="true" signature="176:10222" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="215:10220" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="642:1092" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="1123:1237" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="1296:1611" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="1789:2394" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="2164:2239" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="2425:3076" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="2492:2758" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="2789:2901" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="3109:3551" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="3636:4600" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="3714:3860" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="4433:4590" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="4671:4816" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="4853:5035" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="5070:5515" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="5582:5983" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="5693:5771" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="6061:6548" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="6234:6311" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="6628:7067" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="6751:6828" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="7098:7317" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="7357:7577" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="7617:7845" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="7912:8810" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="8315:8800" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="8456:8755" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="8867:9263" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="8978:9029" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="9313:9711" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="9424:9469" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="9747:9957" ph="{...}" />
-            <marker date="1569129809565" expanded="true" signature="9994:10214" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -926,31 +882,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
           <caret line="153" column="13" lean-forward="true" selection-start-line="153" selection-start-column="13" selection-end-line="153" selection-end-column="13" />
-          <folding>
-            <marker date="1568085949249" expanded="true" signature="0:1720" ph="/* prussdrv.h ... */" />
-            <marker date="1568085949249" expanded="true" signature="1722:2094" ph="/* ============================================================================ ... */" />
-            <marker date="1568085949249" expanded="true" signature="2102:2178" ph="..." />
-            <marker date="1568085949249" expanded="true" signature="2179:2254" ph="/* ReSharper disable InconsistentNaming ... */" />
-            <marker date="1568085949249" expanded="true" signature="2280:16423" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="2312:16421" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="5804:6069" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="5953:6059" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="6159:6414" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="6302:6404" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="6504:9500" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="6527:6599" ph="/* Enabled SYSEVTs - Range:0..63 ... */" />
-            <marker date="1568085949249" expanded="true" signature="6737:6850" ph="/* SysEvt to Channel map. SYSEVTs - Range:0..63 Channels -Range: 0..9 ... */" />
-            <marker date="1568085949249" expanded="true" signature="7011:7119" ph="/* Channel to Host map.Channels -Range: 0..9  HOSTs - Range:0..9 ... */" />
-            <marker date="1568085949249" expanded="true" signature="7431:7690" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="7760:9490" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="7912:8201" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="8270:8818" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="8885:9221" ph="{...}" />
-            <marker date="1568085949249" expanded="true" signature="11201:11570" ph="/* Find and return the channel a specified event is mapped to. ... */" />
-            <marker date="1568085949249" expanded="true" signature="11739:12148" ph="/* Find and return the host interrupt line a specified channel is mapped ... */" />
-            <marker date="1568085949249" expanded="true" signature="12315:12592" ph="/* Find and return the host interrupt line a specified event is mapped ... */" />
-            <marker date="1568085949249" expanded="true" signature="13821:13929" ph="/* Wait for the specified host interrupt. ... */" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1088,7 +1019,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/Listener.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1035">
+        <state relative-caret-position="990">
           <caret line="94" column="13" selection-start-line="94" selection-start-column="13" selection-end-line="94" selection-end-column="13" />
           <folding>
             <marker date="1571113757805" expanded="false" signature="6:118" ph="..." />
@@ -1110,7 +1041,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/ControlServer.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="165">
           <caret line="18" selection-start-line="18" selection-end-line="18" />
           <folding>
             <marker date="1571113607132" expanded="false" signature="6:145" ph="..." />
@@ -1159,8 +1090,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
+        <state relative-caret-position="450">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
