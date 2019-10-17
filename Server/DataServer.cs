@@ -36,7 +36,7 @@ namespace Arvid.Server
                     // Ignore segments that don't match current width
                     if (stride != PruManager.Width) continue;
 
-                    var dst = &PruManager.FrameBuffers[0][y * stride];
+                    var dst = &PruManager.FrameBuffer[y * stride];
 
                     var res = ZSTD_decompressDCtx(
                         zContext,

@@ -47,12 +47,14 @@
 //address to set and clear all bits on GPIO register
 #define GPIO_DATAOUT 0x13c
 
-#define SYNC_HI		r7
-#define SYNC_LO		r8
-#define SYNC_BIT	r9
-#define GPIO_OUT_ADDR  r12
-#define GPIO_OUT_CLEAR r13
-#define LINE_POS_MOD r14
+#define SYNC_HI		    r7
+#define SYNC_LO		    r8
+#define SYNC_BIT	    r9
+#define GPIO_OUT_ADDR   r12
+#define GPIO_OUT_CLEAR  r13
+#define LINE_POS_MOD    r14
+#define VSYNC_LINE      r15
+#define VSYNC_CNT       r16
 
 #define TOTAL_LINES  r3
 #define PIXEL_CNT r23.w1
@@ -76,6 +78,12 @@
 #define LINE_END_DELAY_MOD 					r22.b3
 
 #define ENABLE_INTERLACE r23.w0
+
+// To signal the host that we're done, we set bit 5 in our R31
+// simultaneously with putting the number of the signal we want
+// into R31 bits 0-3. See 5.2.2.2 in AM335x PRU-ICSS Reference Guide.
+#define PRU0_R31_VEC_VALID (1<<5)
+#define EVT_OUT_2 5 // corresponds to PRU_EVTOUT_2
 
 // ****************************************
 // Program start
@@ -112,6 +120,10 @@ Start:
 // load line X pos
 	mov r0, 0x14 //address 20 (5th int index)
 	lbbo LINE_POS_MOD, r0, 0, 4
+	
+// load Vsync line
+	mov r0, 0x18 //address 24 (6th int index)
+	lbbo VSYNC_LINE, r0, 0, 4
 
 //set frame buffer address (ddr + 64 reserved bytes )
 	mov FRAME_BUFFER, r4
@@ -135,10 +147,6 @@ Start:
 	sbbo r1, r0, 0, 4
 
 // wait to ensure PRU0 is synced
-	NOP
-	NOP
-	NOP
-	NOP
 	NOP
 	NOP
 	NOP
@@ -224,7 +232,6 @@ lines_loop:
 
 
 	//end of single frame
-	//TODO - notify host about VSYNC
 
 	GOTO Frame							//draw new frame
 
@@ -372,17 +379,21 @@ send_pulse_continue:
 // the black (or background) color has to be set, then total time of 4us must be kept.
 
 	//Pulse 25
-	call Pulse						// wait 2us
-	NOP								// comps. 1st cycle
-	NOP								// comps. 2nd cycle
-	NOP								// comps. 3rd cycle
+	call Pulse						            // wait 2us
+	NOP	                        	            // comps. 1st cycle
+	NOP								            // comps. 2nd cycle
+	NOP								            // comps. 3rd cycle
 
 	//Pulse 26
-	call ModPulseEnd				// wait ~2us (is modified via LINE_POS_MOD)
-	NOP								// comps. 1st cycle
-	NOP								// comps. 2nd cycle
-	NOP								// comps. 3rd cycle
-
+	call ModPulseEnd				            // wait ~2us (is modified via LINE_POS_MOD)
+	add VSYNC_CNT, VSYNC_CNT, 1                 // comps. 1st cycle
+	qbeq trigger_vsync, VSYNC_CNT, VSYNC_LINE   // comps. 2nd cycle   
+	qba check_finished                          // comps. 3rd cycle (if branch not taken)
+	
+trigger_vsync:
+    mov r31.b0, PRU0_R31_VEC_VALID | EVT_OUT_2  // comps. 3rd cycle (if branch taken)
+	
+check_finished:
 //final delay at the end of the line (240 - 320) cycles (depending on the horiz. resolution)
 	mov r0.w2, LINE_END_DELAY_REG
 pixel_line_final_delay:
@@ -463,7 +474,9 @@ calculate_passive_delay:
 
 	// clear ODD_FIELD_FLAG if interlacing is disabled
 	and ODD_FIELD_FLAG, ENABLE_INTERLACE, ODD_FIELD_FLAG
-	NOP                             		// Comp for wait
+	
+	// clear VSYNC_CNT to 0
+	ldi VSYNC_CNT, 0                		
 
 	mov r19.w2, 187           				// Mark a default wait of 187 * 2 = 386 cycles for the full 1.995us
 	qbeq no_interlace, ENABLE_INTERLACE, 0

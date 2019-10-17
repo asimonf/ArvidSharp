@@ -19,6 +19,7 @@ namespace Arvid
         GetLineMod = 32,
         SetLineMod = 33,
         SetVirtualSync = 34,
+        SetInterlacing = 35,
         
         UpdateStart = 40,
         UpdatePacket = 41,

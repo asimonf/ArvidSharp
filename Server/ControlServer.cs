@@ -296,6 +296,13 @@ namespace Arvid.Server
             PruManager.SetVsyncLine(receivedData[0]);
             _sendEmptyResponse();
         }
+
+        private void SetInterlacing(ReadOnlySpan<ushort> receivedData)
+        {
+            PruManager.SetInterlacing(receivedData[0]);
+            _sendEmptyResponse();            
+        }
+        
         private void UpdateStart(ReadOnlySpan<ushort> receivedData) {}
         private void UpdatePacket(ReadOnlySpan<ushort> receivedData) {}
         private void UpdateEnd(ReadOnlySpan<ushort> receivedData) {}
