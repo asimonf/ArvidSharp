@@ -11,17 +11,15 @@ namespace Arvid.Server
     {
         private bool _initialized;
 
-        private delegate void Command(ReadOnlySpan<ushort> payload);
+        private delegate void Command(ushort id, ReadOnlySpan<ushort> payload);
         
         private readonly Listener _listener;
         private readonly Dictionary<CommandEnum, Command> _commandMap;
-        private readonly Dictionary<CommandEnum, Action> _actionMap;
 
         public ControlServer(Socket socket, Listener listener) : base(socket)
         {
             _listener = listener;
             _commandMap = new Dictionary<CommandEnum, Command>();
-            _actionMap = new Dictionary<CommandEnum, Action>();
         }
 
         public void Setup()
@@ -43,12 +41,7 @@ namespace Arvid.Server
                 // Create delegate and add to the delegateMap
                 var method = GetType().GetMethod(commandValue.ToString(), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
-                if (method.GetParameters().Length == 0)
-                    _actionMap.Add(commandEnum, Delegate.CreateDelegate(typeof(Action), this, method.Name) as Action);
-                else if (method.GetParameters().Length == 1)
-                    _commandMap.Add(commandEnum, Delegate.CreateDelegate(typeof(Command), this, method.Name) as Command);
-                else
-                    throw new Exception("Invalid method definition");
+                _commandMap.Add(commandEnum, Delegate.CreateDelegate(typeof(Command), this, method.Name) as Command);
             }
         }
 
@@ -62,7 +55,13 @@ namespace Arvid.Server
             {
                 while (true)
                 {
-                    var receivedWords = Socket.Receive(receiveSpan) / 2;
+                    // Clear out the buffer
+                    for (var i = 0; i < bufferSize; i++)
+                    {
+                        receiveBuffer[i] = 0;
+                    }
+                    
+                    var receivedWords = Socket.Receive(receiveSpan) >> 1;
 
                     if (receivedWords == 0)
                     {
@@ -74,106 +73,113 @@ namespace Arvid.Server
                     Debug.Assert(receivedWords >= 2);
 
                     var command = (CommandEnum)receiveBuffer[0];
+                    var id = receiveBuffer[1];
+                    var hasPayload = receivedWords > 2;
 
                     if (command == CommandEnum.Init)
                     {
-                        Init();
+                        Init(id, ReadOnlySpan<ushort>.Empty);
                         continue;
                     }
+                    
+                    Debug.Assert(command == CommandEnum.Vsync);
+                    Debug.Assert(hasPayload == false);
 
                     if (!_initialized) continue;
+                    
+                    var payload = hasPayload
+                        ? new ReadOnlySpan<ushort>(receiveBuffer + 2, receivedWords - 2)
+                        : ReadOnlySpan<ushort>.Empty
+                    ;
 
-                    var hasPayload = receivedWords > 2;
-
-                    if (hasPayload)
-                        _commandMap[command](new ReadOnlySpan<ushort>(receiveBuffer + 2, receivedWords - 2));
-                    else
-                        _actionMap[command]();
+                    _commandMap[command](id, payload);
                 }
             } catch (Exception e)
             {
                 Console.WriteLine(e);
                 _listener.EnqueueMessage(ListenerMessage.Stop);
-                return;
             }
         }
         
         // Commands
 
-        private unsafe void _sendEmptyResponse()
+        private unsafe void _sendStandardResponse(ushort id, int responseData = 0)
         {
-            var sendBuffer = stackalloc ushort[6];
-            Socket.Send(new ReadOnlySpan<byte>(sendBuffer, 12));
-        }
-        
-        private unsafe void _sendStandardResponse(int responseData)
-        {
-            var response = new StandardResponse {responseData = responseData};
+            var response = new StandardResponse
+            {
+                id = id,
+                responseData = responseData
+            };
             Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(StandardResponse)));
         }
         
-        private unsafe void _sendStandardResponse(float responseData)
+        private unsafe void _sendStandardResponse(ushort id, float responseData)
         {
-            var response = new StandardResponse {floatResponse = responseData};
+            var response = new StandardResponse
+            {
+                id = id,
+                floatResponse = responseData
+            };
             Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(StandardResponse)));
         }
 
-        private void Init()
+        private void Init(ushort id, ReadOnlySpan<ushort> payload)
         {
             if (!_initialized)
             {
                 _listener.EnqueueMessage(ListenerMessage.Init);
                 _initialized = true;
             }
-            
-            _sendEmptyResponse();
+
+            _sendStandardResponse(id);
         }
 
-        private void Close()
+        private void Close(ushort id, ReadOnlySpan<ushort> payload)
         {
-            _sendEmptyResponse();
+            _sendStandardResponse(id);
             _listener.EnqueueMessage(ListenerMessage.Stop);
         }
 
-        private void PowerOff()
+        private void PowerOff(ushort id, ReadOnlySpan<ushort> payload)
         {
-            _sendEmptyResponse();
+            _sendStandardResponse(id);
             _listener.EnqueueMessage(ListenerMessage.ShutDown);
         }
 
-        private void GetFrameNumber()
+        private void GetFrameNumber(ushort id, ReadOnlySpan<ushort> payload)
         {
-            _sendStandardResponse((int) PruManager.GetFrameNumber());
+            _sendStandardResponse(id, (int) PruManager.GetFrameNumber());
         }
 
-        private unsafe void Vsync()
+        private unsafe void Vsync(ushort id, ReadOnlySpan<ushort> payload)
         {
             PruManager.WaitForVsync();
             var response = new VsyncResponse
             {
+                id = id,
                 frameNumber = PruManager.GetFrameNumber(), buttons = PruManager.GetButtons()
             };
             Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(VsyncResponse)));
         }
 
-        private void SetVideoMode(ReadOnlySpan<ushort> payload)
+        private void SetVideoMode(ushort id, ReadOnlySpan<ushort> payload)
         {
             var mode = (VideoMode) payload[0];
             var lines = payload[1];
             
             PruManager.SetVideoMode(mode, lines);
-            
-            _sendEmptyResponse();
+
+            _sendStandardResponse(id);
         }
 
-        private void GetVideoModeLines(ReadOnlySpan<ushort> payload)
+        private void GetVideoModeLines(ushort id, ReadOnlySpan<ushort> payload)
         {
             var modeVal = payload[0];
 
             //check video mode
             if (modeVal >= (ushort) VideoMode.ModeCount)
             {
-                _sendStandardResponse((int) ServerError.ArvidErrorIllegalVideoMode);
+                _sendStandardResponse(id, (int) ServerError.ArvidErrorIllegalVideoMode);
                 return;
             }
 
@@ -204,17 +210,17 @@ namespace Arvid.Server
             if (lineRateIndex < 0)
                 lineRateIndex = ~lineRateIndex;
             
-            _sendStandardResponse(table[lineRateIndex].Lines);
+            _sendStandardResponse(id, table[lineRateIndex].Lines);
         }
 
-        private void GetVideoModeFrequency(ReadOnlySpan<ushort> payload)
+        private void GetVideoModeFrequency(ushort id, ReadOnlySpan<ushort> payload)
         {
             var modeVal = payload[0];
 
             //check video mode
             if (modeVal >= (ushort) VideoMode.ModeCount)
             {
-                _sendStandardResponse((int) ServerError.ArvidErrorIllegalVideoMode);
+                _sendStandardResponse(id, (int) ServerError.ArvidErrorIllegalVideoMode);
                 return;
             }
             
@@ -226,13 +232,13 @@ namespace Arvid.Server
             //limit lines to sane values
             if (lines > table[0].Lines)
             {
-                _sendStandardResponse(table[0].Rate);
+                _sendStandardResponse(id, table[0].Rate);
                 return;
             }
 
             if (lines < table[^1].Lines)
             {
-                _sendStandardResponse(table[^1].Rate);
+                _sendStandardResponse(id, table[^1].Rate);
                 return;
             }
 
@@ -245,22 +251,26 @@ namespace Arvid.Server
             if (lineRateIndex < 0)
                 lineRateIndex = ~lineRateIndex;
             
-            _sendStandardResponse(table[lineRateIndex].Rate);
+            _sendStandardResponse(id, table[lineRateIndex].Rate);
         }
 
-        private void GetWidth()
+        private void GetWidth(ushort id, ReadOnlySpan<ushort> payload)
         {
-            _sendStandardResponse(PruManager.Width);
+            _sendStandardResponse(id, PruManager.Width);
         }
 
-        private void GetHeight()
+        private void GetHeight(ushort id, ReadOnlySpan<ushort> payload)
         {
-            _sendStandardResponse(PruManager.Height);
+            _sendStandardResponse(id, PruManager.Height);
         }
 
-        private unsafe void EnumVideoModes()
+        private unsafe void EnumVideoModes(ushort id, ReadOnlySpan<ushort> payload)
         {
-            var response = new VideoListResponse {responseData = VideoModeHelpers.VideoModeInfoTable.Length};
+            var response = new VideoListResponse
+            {
+                id = id,
+                responseData = VideoModeHelpers.VideoModeInfoTable.Length
+            };
 
             fixed (VideoModeInfo* videoModesPtr = VideoModeHelpers.VideoModeInfoTable)
             {
@@ -275,36 +285,36 @@ namespace Arvid.Server
             Socket.Send(new ReadOnlySpan<byte>(response.rawData, sizeof(StandardResponse)));
         }
 
-        private void GetVideoModeCount()
+        private void GetVideoModeCount(ushort id, ReadOnlySpan<ushort> payload)
         {
-            _sendStandardResponse(VideoModeHelpers.VideoModeInfoTable.Length);
+            _sendStandardResponse(id, VideoModeHelpers.VideoModeInfoTable.Length);
         }
 
-        private void GetLineMod()
+        private void GetLineMod(ushort id, ReadOnlySpan<ushort> payload)
         {
-            _sendStandardResponse(PruManager.LinePosMod);
+            _sendStandardResponse(id, PruManager.LinePosMod);
         }
 
-        private void SetLineMod(ReadOnlySpan<ushort> receivedData)
+        private void SetLineMod(ushort id, ReadOnlySpan<ushort> receivedData)
         {
             PruManager.SetLinePosMod(receivedData[0]);
-            _sendEmptyResponse();
+            _sendStandardResponse(id);
         }
 
-        private void SetVirtualSync(ReadOnlySpan<ushort> receivedData)
+        private void SetVirtualSync(ushort id, ReadOnlySpan<ushort> receivedData)
         {
             PruManager.SetVsyncLine(receivedData[0]);
-            _sendEmptyResponse();
+            _sendStandardResponse(id);
         }
 
-        private void SetInterlacing(ReadOnlySpan<ushort> receivedData)
+        private void SetInterlacing(ushort id, ReadOnlySpan<ushort> receivedData)
         {
             PruManager.SetInterlacing(receivedData[0]);
-            _sendEmptyResponse();            
+            _sendStandardResponse(id);
         }
         
-        private void UpdateStart(ReadOnlySpan<ushort> receivedData) {}
-        private void UpdatePacket(ReadOnlySpan<ushort> receivedData) {}
-        private void UpdateEnd(ReadOnlySpan<ushort> receivedData) {}
+        private void UpdateStart(ushort id, ReadOnlySpan<ushort> receivedData) {}
+        private void UpdatePacket(ushort id, ReadOnlySpan<ushort> receivedData) {}
+        private void UpdateEnd(ushort id, ReadOnlySpan<ushort> receivedData) {}
     }
 }

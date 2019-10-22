@@ -49,12 +49,18 @@ namespace Arvid.Client
         {
             var responseStruct = new StandardResponse();
 
-            do
-            {
-                _control.Receive(new Span<byte>(responseStruct.rawData, sizeof(StandardResponse)));
-            } while (id != responseStruct.id);
+            _control.Receive(new Span<byte>(responseStruct.rawData, sizeof(StandardResponse)));
             
             return responseStruct.responseData;
+        }
+        
+        private unsafe uint _getVsyncResponse(ushort id)
+        {
+            var responseStruct = new VsyncResponse();
+
+            _control.Receive(new Span<byte>(responseStruct.rawData, sizeof(VsyncResponse)));
+            
+            return responseStruct.frameNumber;
         }
 
         private unsafe ushort _createAndSendControlPayload(
@@ -150,11 +156,11 @@ namespace Arvid.Client
                 output.CompressedSize
             );
 
-            fixed (void* payloadPtr = payload)
-            {
-                var payloadSpan = new ReadOnlySpan<byte>(payloadPtr, payloadSize << 1);
-                _data.Send(payloadSpan);
-            }
+            //fixed (void* payloadPtr = payload)
+            //{
+            //    var payloadSpan = new ReadOnlySpan<byte>(payloadPtr, payloadSize << 1);
+            //    _data.Send(payloadSpan);
+            //}
         }
 
         public int BlitBuffer(ushort[] buffer, int width, int height)
@@ -181,14 +187,9 @@ namespace Arvid.Client
             _blitter.Wait();
             
             var id = _createAndSendControlPayload(CommandEnum.Vsync);
-            var response = _getRegularResponse(id);
+            var response = _getVsyncResponse(id);
 
-            Span<byte> responseData = stackalloc byte[4];
-            _control.Receive(responseData);
-
-            // TODO: Do something with the response data containing buttons
-            
-            return response;
+            return (int)response;
         }
 
         public unsafe int SetVideoMode(VideoMode mode, int lines)

@@ -27,6 +27,7 @@ namespace Arvid.Server
 
         public StateEnum State { get; private set; }
         
+
         public Listener()
         {
             var ip = IPAddress.Any;
@@ -57,6 +58,8 @@ namespace Arvid.Server
 
         private void _acceptControlConnection(IAsyncResult ar)
         {
+            Console.WriteLine("Handshaking");
+            
             var listener = (Socket) ar.AsyncState;
 
             var handler = listener.EndAccept(ar);

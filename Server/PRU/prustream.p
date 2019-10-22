@@ -57,7 +57,6 @@
 #define EVT_OUT_0 3 // corresponds to PRU_EVTOUT_0
 #define EVT_OUT_1 4
 
-
 // ****************************************
 // Program start - PRU0 data streamer
 // ****************************************

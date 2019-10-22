@@ -83,7 +83,7 @@
 // simultaneously with putting the number of the signal we want
 // into R31 bits 0-3. See 5.2.2.2 in AM335x PRU-ICSS Reference Guide.
 #define PRU0_R31_VEC_VALID (1<<5)
-#define EVT_OUT_2 5 // corresponds to PRU_EVTOUT_2
+#define EVT_OUT_2 2 // corresponds to PRU_EVTOUT_2
 
 // ****************************************
 // Program start
@@ -147,6 +147,10 @@ Start:
 	sbbo r1, r0, 0, 4
 
 // wait to ensure PRU0 is synced
+	NOP
+	NOP
+	NOP
+	NOP
 	NOP
 	NOP
 	NOP

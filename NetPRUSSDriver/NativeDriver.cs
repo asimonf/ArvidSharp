@@ -193,38 +193,31 @@ namespace NetPRUSSDriver
 
                 Array.Copy(new sbyte[]
                 {
-                    PRU0_PRU1_INTERRUPT, 
                     PRU1_PRU0_INTERRUPT, 
                     PRU0_ARM_INTERRUPT, 
                     PRU1_ARM_INTERRUPT,
-                    ARM_PRU0_INTERRUPT, 
-                    ARM_PRU1_INTERRUPT, 
                     -1
-                }, 0, ret.sysevts_enabled, 0, 7);
+                }, 0, ret.sysevts_enabled, 0, 4);
 
                 Array.Copy(new[]
                 {
-                    new tsysevt_to_channel_map(PRU0_PRU1_INTERRUPT,CHANNEL1), 
                     new tsysevt_to_channel_map(PRU1_PRU0_INTERRUPT, CHANNEL0), 
-                    new tsysevt_to_channel_map(PRU0_ARM_INTERRUPT,CHANNEL2), 
+                    new tsysevt_to_channel_map(PRU0_ARM_INTERRUPT, CHANNEL2), 
                     new tsysevt_to_channel_map(PRU1_ARM_INTERRUPT, CHANNEL3), 
-                    new tsysevt_to_channel_map(ARM_PRU0_INTERRUPT, CHANNEL0), 
-                    new tsysevt_to_channel_map(ARM_PRU1_INTERRUPT, CHANNEL1),  
                     new tsysevt_to_channel_map(-1,-1)
-                }, 0, ret.sysevt_to_channel_map, 0, 7);
+                }, 0, ret.sysevt_to_channel_map, 0, 4);
 
                 Array.Copy(new[]
                 {
-                    new tchannel_to_host_map(CHANNEL0,PRU0), 
-                    new tchannel_to_host_map(CHANNEL1, PRU1), 
+                    new tchannel_to_host_map(CHANNEL0, PRU_EVTOUT2), 
                     new tchannel_to_host_map(CHANNEL2, PRU_EVTOUT0), 
                     new tchannel_to_host_map(CHANNEL3, PRU_EVTOUT1), 
                     new tchannel_to_host_map(-1,-1)
-                }, 0, ret.channel_to_host_map, 0, 5);
+                }, 0, ret.channel_to_host_map, 0, 4);
+
 
                 /*Enable PRU0, PRU1, PRU_EVTOUT0 */
-                ret.host_enable_bitmask = (PRU0_HOSTEN_MASK | PRU1_HOSTEN_MASK | PRU_EVTOUT0_HOSTEN_MASK |
-                                       PRU_EVTOUT1_HOSTEN_MASK);
+                ret.host_enable_bitmask = (PRU_EVTOUT0_HOSTEN_MASK | PRU_EVTOUT1_HOSTEN_MASK | PRU_EVTOUT2_HOSTEN_MASK);
 
                 return ret;
             }

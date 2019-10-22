@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Arvid.Server
@@ -9,14 +10,22 @@ namespace Arvid.Server
         public static int Main(string[] args)
         {
             PruManager.Init();
-            var listener = new Listener();
+
+            Thread.Sleep(100);
             
+            Console.WriteLine("Initialized");
+
+            var listener = new Listener();
+
             listener.Listen();
+            Console.WriteLine("Listening...");
 
             while (listener.State != Listener.StateEnum.None)
             {
                 listener.DoMessageLoop();
             }
+            
+            FrameStreamer.Stop();
 
             return 0;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
-using Arvid.Client;
+using System.Diagnostics;
 using System.Threading;
+using Arvid.Client;
 
 namespace TestClient
 {
@@ -8,11 +9,21 @@ namespace TestClient
     {
         static void Main(string[] args)
         {
-            var client = new Client("192.168.7.2");
+            var client = new Client("192.168.2.101");
 
             Console.WriteLine(client.Connect());
+            
+            Thread.Sleep(100);
 
-            Thread.Sleep(10000);
+            var timestamp = Stopwatch.GetTimestamp();
+
+            while (true)
+            {
+                var width = client.WaitForVsync();
+                var timeElapsed = (Stopwatch.GetTimestamp() - timestamp) / (double)Stopwatch.Frequency;
+                timestamp = Stopwatch.GetTimestamp();
+                Console.WriteLine(timeElapsed * 1000);                    
+            }
 
             client.Disconnect();
 

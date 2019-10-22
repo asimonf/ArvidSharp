@@ -31,6 +31,12 @@ namespace Arvid.Server
             InitializedEvent.WaitOne();
         }
 
+        public static void Stop()
+        {
+            _stopThread = true;
+            Thread.Join();
+        }
+
         public static void PauseAtNextFrame()
         {
             if (_paused) return;
@@ -54,10 +60,12 @@ namespace Arvid.Server
             int height = PruManager.Lines;
 
             //each mini frame buffer is worth of 4 lines
-            dstFb[0] = (ushort*)(&PruManager.PruSharedMem[4 + 340]);
+            dstFb[0] = (ushort*)&PruManager.PruSharedMem[4 + 340];
 
             dstFb[1] = dstFb[0];
             dstFb[1] += width * 4;
+
+            InitializedEvent.Set();
             
             while (true)
             {

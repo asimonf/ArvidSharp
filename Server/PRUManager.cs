@@ -49,7 +49,7 @@ namespace Arvid.Server
 
         public static bool Interlacing { get; private set; }
 
-        public static ushort LinePosMod { get; private set; }
+        public static ushort LinePosMod { get; private set; } = 60;
 
         public static ushort Width { get; private set; }
         public static ushort Height { get; private set; }
@@ -63,8 +63,6 @@ namespace Arvid.Server
         public static unsafe uint* PruSharedMem => _pruSharedMem;
 
         public static bool Initialized { get; private set; }
-
-        public static object Sync = new object();
 
         private static unsafe int _getUioAddress(int id)
         {
@@ -193,6 +191,7 @@ namespace Arvid.Server
         private static unsafe void _setPruMem(int mode, int fbLines)
         {
             Height = 224;
+            Lines = (ushort)fbLines;
             VsyncLine = Height;
             
             var fbWidth = VideoModeHelpers.ModeWidthTable[mode];
@@ -260,8 +259,9 @@ namespace Arvid.Server
             _initUio();
             _initPruss();
             _initMemory();
+            SetVideoMode(VideoMode.Mode320, 252);
             _loadPruCode();
-
+            FrameStreamer.Init();
 
             Initialized = true;
         }
@@ -274,7 +274,7 @@ namespace Arvid.Server
         public static void WaitForVsync()
         {
             prussdrv_pru_wait_event(PRU_EVTOUT_2);
-            prussdrv_pru_clear_event(PRU_EVTOUT_2, PRU0_ARM_INTERRUPT);
+            prussdrv_pru_clear_event(PRU_EVTOUT_2, PRU1_PRU0_INTERRUPT);
         }
 
         public static unsafe uint GetButtons()
@@ -292,7 +292,7 @@ namespace Arvid.Server
                 return;
             }
 
-            FrameStreamer.PauseAtNextFrame();
+//            FrameStreamer.PauseAtNextFrame();
 
             _setPruMem(mode, lines);
             _ddrMem[0] = 0;
@@ -302,7 +302,7 @@ namespace Arvid.Server
             
             _loadPruCode();
 
-            FrameStreamer.Resume();
+//            FrameStreamer.Resume();
         }
 
         public static void SetVsyncLine(int line)

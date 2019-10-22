@@ -43,6 +43,11 @@
             <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
         </Exec>
 
+        <Exec Command="Utils\pasm -b PRU\prutest.p" ConsoleToMSBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+        </Exec>
+
+        <Move SourceFiles="prutest.bin" DestinationFolder="$(OutputPath)" OverwriteReadOnlyFiles="true" />
         <Move SourceFiles="prustream.bin" DestinationFolder="$(OutputPath)" OverwriteReadOnlyFiles="true" />
         <Move SourceFiles="pruvideo_universal.bin" DestinationFolder="$(OutputPath)" OverwriteReadOnlyFiles="true" />
     </Target>
